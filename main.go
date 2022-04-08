@@ -1,7 +1,7 @@
 package main
 
 import (
-	"user_context/server"
+	"user-context/server"
 )
 
 func main() {

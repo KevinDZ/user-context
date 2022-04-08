@@ -1,12 +1,12 @@
 package domain
 
 import (
-	"user_context/domain/account"
-	"user_context/domain/application"
-	"user_context/domain/organization"
-	"user_context/domain/package"
-	"user_context/domain/permission"
-	"user_context/domain/space"
+	"user-context/domain/account"
+	"user-context/domain/application"
+	"user-context/domain/organization"
+	"user-context/domain/package"
+	"user-context/domain/permission"
+	"user-context/domain/space"
 )
 
 type AggregateRoot struct {

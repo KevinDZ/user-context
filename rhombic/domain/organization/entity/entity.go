@@ -1,12 +1,12 @@
 package entity
 
 import (
-	vo2 "user_context/rhombic/domain/package/vo"
-	"user_context/rhombic/domain/permission/vo"
+	vo2 "user-context/rhombic/domain/package/vo"
+	"user-context/rhombic/domain/permission/vo"
 )
 
 // Entity 实体
-type Entity struct{
+type Entity struct {
 	ID            string            //空间ID，实体主键，CurrentSpace内唯一
 	UserID        string            //成员ID
 	Name          string            //空间名称

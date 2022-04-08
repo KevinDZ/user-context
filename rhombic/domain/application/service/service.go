@@ -1,9 +1,9 @@
 package service
 
 import (
-	adapter "user_context/rhombic/acl/adapters/clients"
-	port "user_context/rhombic/acl/ports/clients"
-	"user_context/rhombic/domain/application/vo"
+	adapter "user-context/rhombic/acl/adapters/clients"
+	port "user-context/rhombic/acl/ports/clients"
+	"user-context/rhombic/domain/application/vo"
 )
 
 type Service struct {
@@ -17,6 +17,6 @@ func NewApplicationService() *Service {
 }
 
 // GetList 应用列表
-func (app *Service)GetList(id string) []vo.ValueObject {
+func (app *Service) GetList(id string) []vo.ValueObject {
 	return app.ApplicationClient.GetList(id)
 }

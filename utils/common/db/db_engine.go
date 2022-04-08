@@ -3,8 +3,8 @@ package db
 import (
 	"log"
 	"os"
-	"user_context/rhombic/acl/adapters/pl"
-	"user_context/utils/common"
+	"user-context/rhombic/acl/adapters/pl"
+	"user-context/utils/common"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -56,7 +56,7 @@ func ConnectDB() (*gorm.DB, error) {
 func InitTables(db *gorm.DB) {
 	account := pl.Account{}
 	tables := map[string]interface{}{
-		account.TableName():   account,
+		account.TableName(): account,
 	}
 	for k, v := range tables {
 		if !db.Migrator().HasTable(k) {

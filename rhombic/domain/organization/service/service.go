@@ -1,10 +1,10 @@
 package service
 
 import (
-	clientAdapter "user_context/rhombic/acl/adapters/clients"
-	port "user_context/rhombic/acl/ports/clients"
-	"user_context/rhombic/domain/organization/entity"
-	"user_context/rhombic/domain/organization/vo"
+	clientAdapter "user-context/rhombic/acl/adapters/clients"
+	port "user-context/rhombic/acl/ports/clients"
+	"user-context/rhombic/domain/organization/entity"
+	"user-context/rhombic/domain/organization/vo"
 )
 
 type Service struct {

@@ -3,14 +3,14 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-	"user_context/rhombic/ohs/local/pl"
-	"user_context/rhombic/ohs/local/services"
+	"user-context/rhombic/ohs/local/pl"
+	"user-context/rhombic/ohs/local/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 //
-func RegisteredController(ctx *gin.Context)  {
+func RegisteredController(ctx *gin.Context) {
 	var request pl.RegisteredRequest
 	if err := ctx.ShouldBind(request); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
@@ -41,7 +41,7 @@ func LoginController(ctx *gin.Context) {
 }
 
 // LogoutController 登出控制器
-func LogoutController(ctx *gin.Context)  {
+func LogoutController(ctx *gin.Context) {
 	var request pl.LogoutRequest
 	if err := ctx.ShouldBind(request); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)

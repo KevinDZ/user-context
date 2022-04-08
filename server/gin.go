@@ -1,7 +1,7 @@
 package server
 
 import (
-	"user_context/utils/gin/cmd"
+	"user-context/utils/gin/cmd"
 )
 
 // StartGin gin 框架 http 服务启动

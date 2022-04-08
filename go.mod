@@ -1,4 +1,4 @@
-module user_context
+module user-context
 
 go 1.16
 

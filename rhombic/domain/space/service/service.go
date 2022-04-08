@@ -1,9 +1,9 @@
 package service
 
 import (
-	adapter "user_context/rhombic/acl/adapters/clients"
-	port "user_context/rhombic/acl/ports/clients"
-	"user_context/rhombic/domain/space/vo"
+	adapter "user-context/rhombic/acl/adapters/clients"
+	port "user-context/rhombic/acl/ports/clients"
+	"user-context/rhombic/domain/space/vo"
 )
 
 type Service struct {
@@ -17,6 +17,6 @@ func NewSpaceService() *Service {
 }
 
 // GetList 空间列表
-func (app *Service)GetList(id string) []vo.ValueObject {
+func (app *Service) GetList(id string) []vo.ValueObject {
 	return app.SpaceClient.GetList(id)
 }

@@ -3,9 +3,9 @@ package domain
 import (
 	"github.com/stretchr/testify/require"
 	"testing"
-	"user_context/domain/package"
-	"user_context/domain/permission"
-	"user_context/domain/space"
+	"user-context/domain/package"
+	"user-context/domain/permission"
+	"user-context/domain/space"
 )
 
 func randomAccountAggregate(rootID string, options ...RootOptions) *AggregateRoot {

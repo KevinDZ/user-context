@@ -3,7 +3,7 @@ package publishers
 import (
 	"github.com/go-redis/redis"
 	"sync"
-	"user_context/rhombic/acl/ports/publishers"
+	"user-context/rhombic/acl/ports/publishers"
 )
 
 // AccountEvent 账户发布者，实现账户端口定义的方法
@@ -19,9 +19,7 @@ var (
 
 func NewAccountEvent(channel string) publishers.AccountPublisher {
 	once.Do(func() {
-		client := redis.NewClient(&redis.Options{
-
-		})
+		client := redis.NewClient(&redis.Options{})
 		pub = &AccountEvent{
 			db: client.Publish(channel, ""), // TODO 事件发布者的实体方法
 		}
@@ -29,10 +27,10 @@ func NewAccountEvent(channel string) publishers.AccountPublisher {
 	return pub
 }
 
-func (event AccountEvent)Registered(id, msg string)(ok bool){
+func (event AccountEvent) Registered(id, msg string) (ok bool) {
 	return
 }
 
-func (event AccountEvent)BindWechat(id, msg string)(err error){
+func (event AccountEvent) BindWechat(id, msg string) (err error) {
 	return
 }

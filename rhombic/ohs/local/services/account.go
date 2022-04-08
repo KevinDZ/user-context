@@ -1,9 +1,9 @@
 package services
 
 import (
-	"user_context/rhombic/acl/adapters/repositories"
-	"user_context/rhombic/domain/account/factory"
-	"user_context/rhombic/ohs/local/pl"
+	"user-context/rhombic/acl/adapters/repositories"
+	"user-context/rhombic/domain/account/factory"
+	"user-context/rhombic/ohs/local/pl"
 )
 
 // LoginAppService 登录应用服务
@@ -27,10 +27,12 @@ func LoginAppService(request pl.LoginRequest) (result pl.LoginRespond, err error
 }
 
 // LogoutAppService 登出应用服务
-func LogoutAppService(request pl.LogoutRequest) (err error)  {
+func LogoutAppService(request pl.LogoutRequest) (err error) {
 	// 清除redis保存的account token
 	err = repositories.Delete(request)
-	if err != nil {return}
+	if err != nil {
+		return
+	}
 	return
 }
 
@@ -40,9 +42,13 @@ func RegisteredAppService(request pl.RegisteredRequest) {
 	// 0.通过聚合根ID，实例化聚合根
 	account := factory.InstanceAccountAggregate(rootID)
 	// 1.填充聚合内可选参数
-	account.WithAccountOptions(request.Name,request.PassWord,request.Phone,request.Email,"")
+	account.WithAccountOptions(request.Name, request.PassWord, request.Phone, request.Email, "")
 	// 2.通过聚合，实例化聚合和领域服务
-	if account.InstanceOf() {return}
+	if account.InstanceOf() {
+		return
+	}
 	// 3.调用注册的领域服务
-	if account.Registered() {return}
+	if account.Registered() {
+		return
+	}
 }

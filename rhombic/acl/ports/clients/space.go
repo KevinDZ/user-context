@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"user_context/rhombic/domain/space/vo"
+	"user-context/rhombic/domain/space/vo"
 )
 
 type SpaceClient interface {

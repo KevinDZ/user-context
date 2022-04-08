@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"user_context/rhombic/domain/account/entity"
+	"user-context/rhombic/domain/account/entity"
 )
 
 type AccountRepository interface {

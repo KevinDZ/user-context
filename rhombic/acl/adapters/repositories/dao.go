@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	pl2 "user_context/rhombic/ohs/local/pl"
+	pl2 "user-context/rhombic/ohs/local/pl"
 )
 
 //LoginRecord 用户登录表 - 写操作

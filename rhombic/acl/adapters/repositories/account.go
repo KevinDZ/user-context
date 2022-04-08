@@ -3,9 +3,9 @@ package repositories
 import (
 	"gorm.io/gorm"
 	"sync"
-	"user_context/rhombic/acl/ports/repositories"
-	"user_context/rhombic/domain/account/entity"
-	"user_context/utils/common/db"
+	"user-context/rhombic/acl/ports/repositories"
+	"user-context/rhombic/domain/account/entity"
+	"user-context/utils/common/db"
 )
 
 // AccountAdapter 账户适配器，实现账户端口定义的方法
@@ -35,7 +35,7 @@ func (adapter *AccountAdapter) CheckIsExist(entity entity.Entity) (ok bool) {
 	return
 }
 
-func (adapter *AccountAdapter) Insert(entity entity.Entity)(err error){
+func (adapter *AccountAdapter) Insert(entity entity.Entity) (err error) {
 	return
 }
 
@@ -43,10 +43,10 @@ func (adapter *AccountAdapter) Query(id string) (entity entity.Entity) {
 	return
 }
 
-func (adapter *AccountAdapter) Update(entity entity.Entity){
+func (adapter *AccountAdapter) Update(entity entity.Entity) {
 	return
 }
 
-func (adapter *AccountAdapter) Delete(id string)(err error){
+func (adapter *AccountAdapter) Delete(id string) (err error) {
 	return
 }

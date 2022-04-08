@@ -6,9 +6,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
-	"user_context/rhombic/ohs/remote/controllers/router"
-	"user_context/utils/gin/config"
-	"user_context/utils/gin/setting"
+	"user-context/rhombic/ohs/remote/controllers/router"
+	"user-context/utils/gin/config"
+	"user-context/utils/gin/setting"
 )
 
 var cfgFile string

@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"user_context/rhombic/ohs/local/pl"
+	"user-context/rhombic/ohs/local/pl"
 )
 
 func IsExist(request pl.LoginRequest) (ok bool) {

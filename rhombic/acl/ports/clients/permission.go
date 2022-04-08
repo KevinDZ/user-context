@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"user_context/rhombic/domain/permission/vo"
+	"user-context/rhombic/domain/permission/vo"
 )
 
 type PermissionClient interface {

@@ -2,7 +2,7 @@ package router
 
 import (
 	"fmt"
-	"user_context/rhombic/ohs/remote/controllers/api"
+	"user-context/rhombic/ohs/remote/controllers/api"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -31,7 +31,6 @@ func Init(g *gin.Engine) {
 	router(apiGroup)
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
-
 
 func router(Router *gin.RouterGroup) {
 	v1 := Router.Group("/v1")

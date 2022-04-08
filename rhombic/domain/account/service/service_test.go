@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/stretchr/testify/require"
 	"testing"
-	"user_context/rhombic/domain/account/entity"
+	"user-context/rhombic/domain/account/entity"
 )
 
 func TestNewAccountService(t *testing.T) {

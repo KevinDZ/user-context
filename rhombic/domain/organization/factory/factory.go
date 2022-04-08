@@ -1,16 +1,16 @@
 package factory
 
 import (
-	"user_context/rhombic/domain"
-	"user_context/rhombic/domain/organization/service"
-	"user_context/rhombic/domain/organization/vo"
+	"user-context/rhombic/domain"
+	"user-context/rhombic/domain/organization/service"
+	"user-context/rhombic/domain/organization/vo"
 )
 
 // Factory 继承AggregateRoot父类：聚合根隐性依赖
 type Factory struct {
-	Root *domain.AggregateRoot
+	Root         *domain.AggregateRoot
 	Organization *vo.ValueObject
-	Client *service.Service
+	Client       *service.Service
 }
 
 // InstanceOrganizationAggregate 实例化聚合
@@ -19,10 +19,16 @@ func InstanceOrganizationAggregate(rootID string) *Factory {
 }
 
 func (factory *Factory) InstanceOf() (ok bool) {
-	if len(factory.Root.RootID) == 0 {return}
-	if factory.Organization != nil {return}
+	if len(factory.Root.RootID) == 0 {
+		return
+	}
+	if factory.Organization != nil {
+		return
+	}
 	factory.Client = service.NewOrganizationService()
-	if factory.Client == nil {return}
+	if factory.Client == nil {
+		return
+	}
 	factory.Organization = &vo.ValueObject{}
 	return true
 }
