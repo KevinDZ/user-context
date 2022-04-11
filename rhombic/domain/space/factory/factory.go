@@ -26,7 +26,7 @@ func (factory *Factory) InstanceOf() (ok bool) {
 	if factory.Application != nil {
 		return
 	}
-	factory.Client = service.NewSpaceService()
+	factory.Client = service.NewSpaceService() // 实例化空间的领域服务
 	if factory.Client == nil {
 		return
 	}

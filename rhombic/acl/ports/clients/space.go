@@ -5,5 +5,5 @@ import (
 )
 
 type SpaceClient interface {
-	GetList(organizationID string) (vo []vo.ValueObject)
+	GetList(organizationID string) []vo.ValueObject
 }

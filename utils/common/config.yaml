@@ -18,4 +18,8 @@ uuidsrv:
   host: http://127.0.0.1:8181
 
 addr: 127.0.0.1
-port: 9080
+
+port:
+  gin: 8080
+  serve: 8090
+  client: 9000

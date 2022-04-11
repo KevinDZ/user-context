@@ -1,0 +1,24 @@
+syntax = "proto3";
+package dto;
+
+option go_package = "../dto";
+
+message SpaceRequest {
+  string OrganizationID = 1;
+}
+
+message SpaceRespond {
+  repeated SpaceValueObject space = 1;
+}
+
+message SpaceValueObject {
+  string Name = 1;
+  string Owner = 2;
+  bool Manager = 3;
+  int32 Seat = 4;
+  int32 Capacity = 5;
+}
+
+service SpaceService {
+  rpc GetList(SpaceRequest) returns (SpaceRespond) {}
+}

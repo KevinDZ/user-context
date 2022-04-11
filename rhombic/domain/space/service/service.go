@@ -10,10 +10,10 @@ type Service struct {
 	port.SpaceClient
 }
 
+// NewSpaceService 实例化空间的领域服务
 func NewSpaceService() *Service {
-	return &Service{
-		adapter.NewSpaceAdapter(),
-	}
+	// 实现端口方法的适配器
+	return &Service{adapter.NewSpaceAdapter()}
 }
 
 // GetList 空间列表

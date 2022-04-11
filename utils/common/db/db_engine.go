@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 	"os"
-	"user-context/rhombic/acl/adapters/pl"
+	"user-context/rhombic/acl/adapters/pl/dao"
 	"user-context/utils/common"
 
 	"gorm.io/driver/postgres"
@@ -53,7 +53,7 @@ func ConnectDB() (*gorm.DB, error) {
 
 // InitTables init tables
 func InitTables(db *gorm.DB) {
-	account := pl.Account{}
+	account := dao.Account{}
 	tables := map[string]interface{}{
 		account.TableName(): account,
 	}

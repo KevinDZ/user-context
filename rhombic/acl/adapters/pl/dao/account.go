@@ -1,7 +1,6 @@
-package pl
+package dao
 
 type Account struct {
-
 }
 
 func (account *Account) TableName() string {
