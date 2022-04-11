@@ -1,14 +1,17 @@
 package common
 
 import (
-	"errors"
-	"io/ioutil"
-	"log"
+	"fmt"
+	"github.com/spf13/viper"
 	"os"
+	"strings"
 	"sync"
-
-	"gopkg.in/yaml.v2"
 )
+
+// ConfigName 配置信息汇总
+type ConfigName struct {
+	name string
+}
 
 // Config config params
 type Config struct {
@@ -27,29 +30,29 @@ var (
 	FileConfig Config
 )
 
-// LoadConfig load configs from yaml file
-func LoadConfig() Config {
-	configOnce.Do(func() {
-		cfgFilePath := os.Getenv("CONFIG_PATH")
-		if _, err := os.Stat(cfgFilePath); errors.Is(err, os.ErrNotExist) {
-			log.Fatal("config file does not exist.")
-		}
-		// FilePath := GetProjectAbPathByCaller()
-		// cfgFilePath = path.Join(FilePath, "/common/config.yaml")
-		file, err := ioutil.ReadFile(cfgFilePath)
-		if err != nil {
-			log.Fatalf("ERROR: Could not read config file :%v", err)
-		}
-		if err := yaml.Unmarshal(file, &FileConfig); err != nil {
-			// if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// 	log.Fatal("ERROR: config file not found")
-			// 	os.Exit(1)
-			// } else {
-			log.Fatalf("Fatal error config file: %v", err)
-			// }
-		}
+// Init 读取配置文件
+func Init(cfgFile string) {
+	t1 := os.Getenv("ENV_REDIS_ADDR")
+	fmt.Println("env.. : ", t1)
+	cluster := os.Getenv("ENV_CLUSTER_ADDR")
+	fmt.Println("cluster env: ", cluster)
+	namespace := os.Getenv("ENV_CLUSTER_NAMESPACE")
+	fmt.Println("namespace env: ", namespace)
+	if cfgFile == "" {
+		path, _ := os.Getwd()
+		cfgFile = path + "/utils/common/config.yaml" // TODO 配置文件的设置
+		fmt.Println(cfgFile)
 
-		return
-	})
-	return FileConfig
+	}
+
+	viper.SetConfigFile(cfgFile)
+	viper.SetEnvPrefix("ENV")
+	viper.AutomaticEnv()
+	replacer := strings.NewReplacer(".", "_")
+	viper.SetEnvKeyReplacer(replacer)
+
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Printf("config file error: %s\n", err)
+		os.Exit(1)
+	}
 }

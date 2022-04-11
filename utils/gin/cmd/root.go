@@ -7,8 +7,8 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"user-context/rhombic/ohs/remote/controllers/router"
-	"user-context/utils/gin/config"
-	"user-context/utils/gin/setting"
+	"user-context/utils/common"
+	"user-context/utils/common/redis"
 )
 
 var cfgFile string
@@ -16,8 +16,8 @@ var serverPort int
 
 var rootCmd = &cobra.Command{
 	Use:   "server",
-	Short: "realibox auth server",
-	Long:  "realibox auth server use help get more info",
+	Short: "realibox user context",
+	Long:  "realibox user context use help get more info",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("启动参数: ", args)
 		runServer()
@@ -33,14 +33,14 @@ func init() {
 // 初始化配置
 func initConfig() {
 	fmt.Println("init config...")
-	config.Init(cfgFile)
+	common.Init(cfgFile)
 }
 
 func runServer() {
 	fmt.Println("server start...")
-	setting.Init()
+	redis.Init()
 	defer func() {
-		setting.RedisClose()
+		redis.Close()
 	}()
 
 	//TODO 基础设施 - nacos SDK

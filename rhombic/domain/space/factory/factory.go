@@ -18,6 +18,7 @@ func InstanceSpaceAggregate(rootID string) *Factory {
 	return &Factory{Root: domain.NewAggregateRoot(rootID)}
 }
 
+// InstanceOf 实例化聚合和领域服务
 func (factory *Factory) InstanceOf() (ok bool) {
 	if len(factory.Root.RootID) == 0 {
 		return

@@ -7,7 +7,6 @@ import (
 	"user-context/utils/common"
 
 	"gorm.io/driver/postgres"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -40,7 +39,7 @@ func ConnectDB() (*gorm.DB, error) {
 		if dbDriver == "postgres" {
 			db, err = gorm.Open(postgres.Open(config.DB.DSN), &gorm.Config{})
 		} else if dbDriver == "sqlite" {
-			db, err = gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
+			//db, err = gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 		}
 
 		log.Println("Connect to db successfully.")

@@ -1,4 +1,4 @@
-package setting
+package redis
 
 import (
 	"fmt"
@@ -7,6 +7,18 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/spf13/viper"
 )
+
+var (
+	// REDIS redis单例
+	REDIS           *redis.Client
+	LIMIT_LOGIN_KEY = "limit_login_%s_%s"
+)
+
+// Init 初始化
+func Init() {
+	fmt.Println("redis init")
+	REDIS = InitRedis()
+}
 
 func InitRedis() *redis.Client {
 	fmt.Println("redis.addr: ", viper.GetString("redis.addr"))
@@ -23,8 +35,8 @@ func InitRedis() *redis.Client {
 	return client
 }
 
-func RedisClose() {
+func Close() {
 	if err := REDIS.Close(); err != nil {
-		fmt.Println("close error, ", err)
+		fmt.Println("redis close error, ", err)
 	}
 }

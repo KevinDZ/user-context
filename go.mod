@@ -12,8 +12,7 @@ require (
 	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/gin-swagger v1.4.1
-	gopkg.in/yaml.v2 v2.4.0
+	google.golang.org/grpc v1.43.0
 	gorm.io/driver/postgres v1.3.3
-	gorm.io/driver/sqlite v1.3.1
 	gorm.io/gorm v1.23.4
 )

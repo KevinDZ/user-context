@@ -22,7 +22,7 @@ func NewAccountService() *Service {
 	}
 }
 
-// Registered 注册账户
+// Registered 注册账户 -- 业务规则
 func (service *Service) Registered(entity entity.Entity) (ok bool) {
 	if ok = service.Repository.CheckIsExist(entity); ok {
 		return !ok
@@ -45,3 +45,15 @@ func (service *Service) Query(id string) entity.Entity {
 func (service *Service) Verify(entity entity.Entity) bool {
 	return service.Repository.CheckIsExist(entity)
 }
+
+// 事件风暴梳理出来的都可以作为功能
+
+// ModifyPersonInformation 修改个人信息
+func (service *Service) ModifyPersonInformation(entity entity.Entity) error {
+	return service.Repository.Update(entity)
+}
+
+// 校验更新密码
+// 校验用户账户密码
+// 用户绑定信息修改
+// 个人信息更新事件

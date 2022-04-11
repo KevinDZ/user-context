@@ -3,11 +3,11 @@ package services
 import (
 	"user-context/rhombic/acl/adapters/repositories"
 	"user-context/rhombic/domain/account/factory"
-	"user-context/rhombic/ohs/local/pl"
+	"user-context/rhombic/ohs/local/pl/vo"
 )
 
 // LoginAppService 登录应用服务
-func LoginAppService(request pl.LoginRequest) (result pl.LoginRespond, err error) {
+func LoginAppService(request vo.LoginRequest) (result vo.LoginRespond, err error) {
 	// 1.判断账户是否存在 - redis获取用户信息
 	// 	1.1 CQRS原则 - 读操作：直接获取，不经过领域模型
 	if ok := repositories.IsExist(request); !ok {
@@ -27,7 +27,7 @@ func LoginAppService(request pl.LoginRequest) (result pl.LoginRespond, err error
 }
 
 // LogoutAppService 登出应用服务
-func LogoutAppService(request pl.LogoutRequest) (err error) {
+func LogoutAppService(request vo.LogoutRequest) (err error) {
 	// 清除redis保存的account token
 	err = repositories.Delete(request)
 	if err != nil {
@@ -37,7 +37,7 @@ func LogoutAppService(request pl.LogoutRequest) (err error) {
 }
 
 // RegisteredAppService 注册账户应用服务
-func RegisteredAppService(request pl.RegisteredRequest) {
+func RegisteredAppService(request vo.RegisteredRequest) {
 	rootID := ""
 	// 0.通过聚合根ID，实例化聚合根
 	account := factory.InstanceAccountAggregate(rootID)
@@ -52,3 +52,10 @@ func RegisteredAppService(request pl.RegisteredRequest) {
 		return
 	}
 }
+
+// 事件风暴梳理出来的都可以作为功能
+// 修改个人信息
+// 校验更新密码
+// 校验用户账户密码
+// 用户绑定信息修改
+// 个人信息更新事件

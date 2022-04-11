@@ -32,6 +32,7 @@ func NewAccountAdapter() repositories.AccountRepository {
 }
 
 func (adapter *AccountAdapter) CheckIsExist(entity entity.Entity) (ok bool) {
+	//查询数据库记录
 	return
 }
 
@@ -43,10 +44,14 @@ func (adapter *AccountAdapter) Query(id string) (entity entity.Entity) {
 	return
 }
 
-func (adapter *AccountAdapter) Update(entity entity.Entity) {
+func (adapter *AccountAdapter) Update(entity entity.Entity) (err error) {
 	return
 }
 
 func (adapter *AccountAdapter) Delete(id string) (err error) {
 	return
+}
+
+func (adapter *AccountAdapter) Save() *AccountAdapter {
+	return &AccountAdapter{adapter.db.Save("")}
 }

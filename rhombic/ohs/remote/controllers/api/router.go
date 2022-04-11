@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-	"user-context/rhombic/ohs/local/pl"
+	"user-context/rhombic/ohs/local/pl/vo"
 	"user-context/rhombic/ohs/local/services"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,7 @@ import (
 
 //
 func RegisteredController(ctx *gin.Context) {
-	var request pl.RegisteredRequest
+	var request vo.RegisteredRequest
 	if err := ctx.ShouldBind(request); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
@@ -22,7 +22,7 @@ func RegisteredController(ctx *gin.Context) {
 // LoginController 登录控制器
 func LoginController(ctx *gin.Context) {
 	// 解析http通信获取的数据，转义成应用服务可识别的数据
-	var request pl.LoginRequest
+	var request vo.LoginRequest
 	if err := ctx.ShouldBind(request); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
@@ -42,7 +42,7 @@ func LoginController(ctx *gin.Context) {
 
 // LogoutController 登出控制器
 func LogoutController(ctx *gin.Context) {
-	var request pl.LogoutRequest
+	var request vo.LogoutRequest
 	if err := ctx.ShouldBind(request); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return

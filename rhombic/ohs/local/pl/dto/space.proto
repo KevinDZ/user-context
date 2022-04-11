@@ -1,0 +1,16 @@
+syntax = "proto3";
+package space;
+
+option go_package = ".";
+
+message Message {
+  string Name = 1;
+  string Owner = 2;
+  bool Manager = 3;
+  int32 Seat = 4;
+  int32 Capacity = 5;
+}
+
+service SpaceService {
+  rpc GetList(Message) returns (Message) {}
+}
