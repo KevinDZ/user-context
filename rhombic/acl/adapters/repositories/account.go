@@ -3,8 +3,10 @@ package repositories
 import (
 	"gorm.io/gorm"
 	"sync"
+	"user-context/rhombic/acl/adapters/pl/dao"
 	"user-context/rhombic/acl/ports/repositories"
 	"user-context/rhombic/domain/account/entity"
+	"user-context/rhombic/ohs/local/pl/vo"
 	"user-context/utils/common/db"
 )
 
@@ -54,4 +56,32 @@ func (adapter *AccountAdapter) Delete(id string) (err error) {
 
 func (adapter *AccountAdapter) Save() *AccountAdapter {
 	return &AccountAdapter{adapter.db.Save("")}
+}
+
+// CQRS原则  读操作
+
+//LoginRecord 用户登录表 - 写操作
+func LoginRecord(request vo.LoginRequest) (err error) {
+	var dao dao.LoginRecordDAO
+	_ = dao
+	return
+}
+
+// AccountDAO CQRS原则：账户数据访问对象  - 读操作
+func AccountDAO(request vo.LoginRequest) (result vo.LoginRespond) {
+	// 用户数据表 - 读操作
+	dao := dao.PostgreSQLDAO{ID: request.ID}
+	_ = dao
+	return
+}
+
+func IsExist(request vo.LoginRequest) (ok bool) {
+	// 1.通过 key 判断是否存在
+	// 2.通过 value 判断是否正确
+	return
+}
+
+func Delete(request vo.LogoutRequest) (err error) {
+	// 1.通过 key 删除
+	return
 }
