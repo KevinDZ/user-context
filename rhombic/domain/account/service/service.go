@@ -26,14 +26,14 @@ func NewAccountService() *Service {
 }
 
 // Registered 注册账户 -- 业务规则
-func (service *Service) Registered(entity entity.Entity) (ok bool) {
-	if ok = service.Repository.CheckIsExist(entity); ok {
-		return !ok
+func (service *Service) Registered(entity entity.Entity) (err error) {
+	if err = service.Repository.CheckIsExist(entity); err != nil {
+		return
 	} // 账户存在，返回注册失败
-	if err := service.Repository.Insert(entity); err != nil {
+	if err = service.Repository.Insert(entity); err != nil {
 		return
 	} // 账户写入失败，返回注册失败
-	return true
+	return
 }
 
 // Query 查询账户
@@ -42,7 +42,7 @@ func (service *Service) Query(id string) entity.Entity {
 }
 
 // Verify 验证账户
-func (service *Service) Verify(entity entity.Entity) bool {
+func (service *Service) Verify(entity entity.Entity) error {
 	return service.Repository.CheckIsExist(entity)
 }
 

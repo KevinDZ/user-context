@@ -16,7 +16,12 @@ func RegisteredController(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
-	services.RegisteredAppService(request)
+	result, err := services.RegisteredAppService(request)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, result)
 }
 
 // LoginController 登录控制器

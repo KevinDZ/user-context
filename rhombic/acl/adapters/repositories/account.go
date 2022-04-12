@@ -33,7 +33,7 @@ func NewAccountAdapter() repositories.AccountRepository {
 	return repo
 }
 
-func (adapter *AccountAdapter) CheckIsExist(entity entity.Entity) (ok bool) {
+func (adapter *AccountAdapter) CheckIsExist(entity entity.Entity) (err error) {
 	//查询数据库记录
 	return
 }

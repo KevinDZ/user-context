@@ -36,7 +36,7 @@ func (factory *Factory) WithAccountOptions(name, passwd, phone, email, thirdPart
 }
 
 // InstanceOf 实例化聚合和启动领域服务
-func (factory *Factory) InstanceOf() (ok bool) {
+func (factory *Factory) InstanceOf() (err error) {
 	if len(factory.Root.RootID) == 0 {
 		return
 	}
@@ -48,18 +48,18 @@ func (factory *Factory) InstanceOf() (ok bool) {
 		return
 	}
 	factory.Entity = &entity.Entity{ID: factory.Root.GetAggregateRootID()}
-	return true
+	return
 }
 
 // Registered 调用注册的领域服务
-func (factory *Factory) Registered() (ok bool) {
+func (factory *Factory) Registered() (err error) {
 	if factory.Service == nil || factory.Service.Repository == nil || factory.Service.Publisher == nil {
 		return
 	}
 	// 用户唯一身份标识：获取uuid
 	factory.Entity.ID = factory.Service.Client.GetUUID()
 	// 领域服务：用户注册的持久化
-	if ok = factory.Service.Registered(*factory.Entity); !ok {
+	if err = factory.Service.Registered(*factory.Entity); err != nil {
 		return
 	}
 	// 设置实体领域行为：注册事件
@@ -68,4 +68,5 @@ func (factory *Factory) Registered() (ok bool) {
 	// 2.事件消息
 	factory.Event = map[string]string{factory.Entity.ID: viper.GetString("event.registered")}
 	return
+
 }

@@ -25,7 +25,7 @@ func NewAccountEvent() publishers.AccountPublisher {
 	return pub
 }
 
-func (event AccountEvent) Registered(channel string, msg map[string]string) (ok bool) {
+func (event AccountEvent) Registered(channel string, msg map[string]string) (err error) {
 	event.Publish(channel, msg)
 	return
 }

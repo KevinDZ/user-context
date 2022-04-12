@@ -39,22 +39,22 @@ func LogoutAppService(request vo.LogoutRequest) (err error) {
 }
 
 // RegisteredAppService 注册账户应用服务
-func RegisteredAppService(request vo.RegisteredRequest) (respond vo.RegisteredRespond) {
+func RegisteredAppService(request vo.RegisteredRequest) (respond vo.RegisteredRespond, err error) {
 	rootID := "" // 设置聚合根ID
 	// 0.通过聚合根ID，实例化聚合根
 	account := factory.InstanceAccountAggregate(rootID)
 	// 1.填充聚合内可选参数
 	account.WithAccountOptions(request.Name, request.PassWord, request.Phone, request.Email, "")
 	// 2.通过聚合，实例化聚合和领域服务
-	if account.InstanceOf() {
+	if err = account.InstanceOf(); err != nil {
 		return
 	}
 	// 3.调用注册的领域服务
-	if account.Registered() {
+	if err = account.Registered(); err != nil {
 		return
 	}
 	// 4.发布注册应用事件
-	if account.Service.Publisher.Registered(account.Channel, account.Event) {
+	if err = account.Service.Publisher.Registered(account.Channel, account.Event); err != nil {
 		return // 注册事件失败， 返回注册失败
 	}
 	respond = vo.RegisteredRespond{}

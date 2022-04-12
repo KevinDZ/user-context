@@ -11,7 +11,7 @@ func TestNewAccountService(t *testing.T) {
 }
 
 func TestService_Registered(t *testing.T) {
-	require.True(t, NewAccountService().Registered(entity.Entity{ID: "rootID"}), "Register failed")
+	require.Error(t, NewAccountService().Registered(entity.Entity{ID: "rootID"}), "Register failed")
 }
 
 func TestService_Query(t *testing.T) {
@@ -21,5 +21,5 @@ func TestService_Query(t *testing.T) {
 
 func TestService_Verify(t *testing.T) {
 	rootID := ""
-	require.True(t, NewAccountService().Verify(entity.Entity{ID: rootID}), "Verify is failed")
+	require.Error(t, NewAccountService().Verify(entity.Entity{ID: rootID}), "Verify is failed")
 }

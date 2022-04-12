@@ -7,12 +7,12 @@ import (
 
 func TestFactory_InstanceOf(t *testing.T) {
 	rootID := ""
-	require.False(t, InstanceAccountAggregate(rootID).InstanceOf())
+	require.Error(t, InstanceAccountAggregate(rootID).InstanceOf(), "")
 	return
 }
 
 func TestFactory_Registered(t *testing.T) {
 	rootID := ""
-	require.False(t, InstanceAccountAggregate(rootID).Registered())
+	require.Error(t, InstanceAccountAggregate(rootID).Registered(), "")
 	return
 }
