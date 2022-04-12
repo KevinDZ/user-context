@@ -8,8 +8,8 @@ import (
 
 // AccountEvent 账户发布者，实现账户端口定义的方法
 type AccountEvent struct {
-	// 发布者实体
-	db *redis.IntCmd //TODO 具体调用方法查看文档
+	// TODO 发布者实体：redis or MQ
+	*redis.Client //TODO 具体调用方法查看文档
 }
 
 var (
@@ -17,20 +17,20 @@ var (
 	pub  publishers.AccountPublisher
 )
 
-func NewAccountEvent(channel string) publishers.AccountPublisher {
+func NewAccountEvent() publishers.AccountPublisher {
 	once.Do(func() {
-		client := redis.NewClient(&redis.Options{})
-		pub = &AccountEvent{
-			db: client.Publish(channel, ""), // TODO 事件发布者的实体方法
-		}
+		// TODO 事件发布者的实体方法 client.Publish(channel, "")
+		pub = &AccountEvent{redis.NewClient(&redis.Options{})}
 	})
 	return pub
 }
 
-func (event AccountEvent) Registered(id, msg string) (ok bool) {
+func (event AccountEvent) Registered(channel string, msg map[string]string) (ok bool) {
+	event.Publish(channel, msg)
 	return
 }
 
-func (event AccountEvent) BindWechat(id, msg string) (err error) {
+func (event AccountEvent) BindWechat(channel string, msg map[string]string) (err error) {
+	event.Publish(channel, msg)
 	return
 }

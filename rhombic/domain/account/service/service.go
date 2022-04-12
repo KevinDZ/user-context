@@ -15,10 +15,9 @@ type Service struct {
 }
 
 func NewAccountService() *Service {
-	channel := ""
 	return &Service{
 		repoAdapter.NewAccountAdapter(),
-		pubAdapter.NewAccountEvent(channel),
+		pubAdapter.NewAccountEvent(),
 	}
 }
 
@@ -30,9 +29,6 @@ func (service *Service) Registered(entity entity.Entity) (ok bool) {
 	if err := service.Repository.Insert(entity); err != nil {
 		return
 	} // 账户写入失败，返回注册失败
-	if ok = service.Publisher.Registered(entity.ID, entity.Event); !ok {
-		return ok
-	} // 注册事件失败， 返回注册失败
 	return true
 }
 

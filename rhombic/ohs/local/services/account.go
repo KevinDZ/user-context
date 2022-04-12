@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/spf13/viper"
 	"user-context/rhombic/acl/adapters/repositories"
 	"user-context/rhombic/domain/account/factory"
 	"user-context/rhombic/ohs/local/pl/vo"
@@ -51,6 +52,11 @@ func RegisteredAppService(request vo.RegisteredRequest) {
 	}
 	// 3.调用注册的领域服务
 	if account.Registered() {
+		return
+	}
+	// 4.发布注册应用事件
+	if account.Service.Publisher.Registered(viper.GetString("channel.user"), account.Entity.Event) {
+		// 注册事件失败， 返回注册失败
 		return
 	}
 }

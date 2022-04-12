@@ -11,4 +11,4 @@ server:
 
 mock:
 	go install github.com/golang/mock/mockgen@v1.6.0
-	mockgen -source=rhombic/acl/ports/repositories/account.go -package=mock -destination=utils/mock/account.go
+	mockgen -source=rhombic/acl/ports/repositories/account.go -package=mock -destination=utils/mock/account.go # TODO windows环境不兼容编译

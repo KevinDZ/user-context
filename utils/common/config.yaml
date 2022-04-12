@@ -23,3 +23,9 @@ port:
   gin: 8080
   serve: 8090
   client: 9000
+
+channel:
+  user: "user_topic"
+
+event:
+  registered: "registered success"

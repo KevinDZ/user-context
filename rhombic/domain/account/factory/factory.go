@@ -1,6 +1,7 @@
 package factory
 
 import (
+	"github.com/spf13/viper"
 	"user-context/rhombic/domain"
 	"user-context/rhombic/domain/account/entity"
 	"user-context/rhombic/domain/account/service"
@@ -49,5 +50,7 @@ func (factory *Factory) Registered() (ok bool) {
 		return
 	}
 	ok = factory.Service.Registered(*factory.Entity)
+	// 设置实体领域行为
+	factory.Entity.Event = map[string]string{factory.Entity.ID: viper.GetString("event.registered")}
 	return
 }
