@@ -39,6 +39,11 @@ func (adapter *SpaceAdapter) GetList(organizationID string) (objects []vo.ValueO
 	}
 	fmt.Println("grpc respond: ", respond)
 
+	if len(respond.GetSpace()) == 0 {
+		log.Fatalf("space is null")
+		return
+	}
+
 	// 领域模型值对象实例化
 	objects = make([]vo.ValueObject, len(respond.GetSpace()))
 

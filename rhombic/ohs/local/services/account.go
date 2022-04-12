@@ -8,28 +8,30 @@ import (
 
 // LoginAppService 登录应用服务
 func LoginAppService(request vo.LoginRequest) (result vo.LoginRespond, err error) {
+	dao := repositories.NewDAO()
 	// 1.判断账户是否存在 - redis获取用户信息
 	// 	1.1 CQRS原则 - 读操作：直接获取，不经过领域模型
-	if ok := repositories.IsExist(request); !ok {
+	if ok := dao.IsExist(request); !ok {
 		// 不存在,返回
 		return
 	}
 	// 2.写账户登录表 - MySQL
 	//	2.1 写操作：无领域模型
-	if err = repositories.LoginRecord(request); err != nil {
+	if err = dao.LoginRecord(request); err != nil {
 		// err报错,返回
 		return
 	}
 	// 3.读用户账户表 - MySQL
 	//	3.1 CQRS原则 - 读操作：直接通过端口获取，不经过领域模型
-	result = repositories.AccountDAO(request)
+	result = dao.AccountDAO(request)
 	return
 }
 
 // LogoutAppService 登出应用服务
 func LogoutAppService(request vo.LogoutRequest) (err error) {
+	dao := repositories.NewDAO()
 	// 清除redis保存的account token
-	err = repositories.Delete(request)
+	err = dao.Delete(request)
 	if err != nil {
 		return
 	}

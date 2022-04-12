@@ -18,7 +18,11 @@ type RegisteredRespond struct {
 
 // LoginRequest 账户登录请求
 type LoginRequest struct {
-	ID string `json:"id,omitempty"`
+	UserID   string `json:"account,omitempty"`
+	Account  string `json:"account,omitempty"`
+	Password string `json:"password,omitempty"`
+	Email    string `json:"email,omitempty"`
+	Phone    string `json:"phone,omitempty"`
 }
 
 // LoginRespond 账户登录响应

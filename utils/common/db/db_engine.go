@@ -84,7 +84,6 @@ func DisconnectDB() error {
 // NewDBEngine create db engine
 func NewDBEngine() *gorm.DB {
 	db, err := ConnectDB()
-
 	if err != nil {
 		panic(err)
 	}
