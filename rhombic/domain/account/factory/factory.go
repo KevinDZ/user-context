@@ -8,9 +8,16 @@ import (
 )
 
 type Factory struct {
-	Root    *domain.AggregateRoot
-	Entity  *entity.Entity
+	// 聚合根
+	Root *domain.AggregateRoot
+	// 聚合
+	Entity *entity.Entity
+	// 领域服务
 	Service *service.Service
+
+	// 应用事件
+	Channel string
+	Event   map[string]string
 }
 
 // InstanceAccountAggregate 实例化聚合
@@ -49,8 +56,16 @@ func (factory *Factory) Registered() (ok bool) {
 	if factory.Service == nil || factory.Service.Repository == nil || factory.Service.Publisher == nil {
 		return
 	}
-	ok = factory.Service.Registered(*factory.Entity)
-	// 设置实体领域行为
-	factory.Entity.Event = map[string]string{factory.Entity.ID: viper.GetString("event.registered")}
+	// 用户唯一身份标识：获取uuid
+	factory.Entity.ID = factory.Service.Client.GetUUID()
+	// 领域服务：用户注册的持久化
+	if ok = factory.Service.Registered(*factory.Entity); !ok {
+		return
+	}
+	// 设置实体领域行为：注册事件
+	// 1.发布通道
+	factory.Channel = viper.GetString("channel.user")
+	// 2.事件消息
+	factory.Event = map[string]string{factory.Entity.ID: viper.GetString("event.registered")}
 	return
 }

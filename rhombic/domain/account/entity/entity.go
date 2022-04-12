@@ -8,6 +8,4 @@ type Entity struct {
 	Phone        string `json:"phone,omitempty"`          //手机
 	Email        string `json:"email,omitempty"`          //邮箱
 	ThirdPartyID string `json:"third_party_id,omitempty"` //第三方上下文 - ID: [微博ID、微信ID、今日头条ID...]
-
-	Event map[string]string `json:"event"`
 }

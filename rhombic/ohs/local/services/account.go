@@ -1,7 +1,6 @@
 package services
 
 import (
-	"github.com/spf13/viper"
 	"user-context/rhombic/acl/adapters/repositories"
 	"user-context/rhombic/domain/account/factory"
 	"user-context/rhombic/ohs/local/pl/vo"
@@ -40,8 +39,8 @@ func LogoutAppService(request vo.LogoutRequest) (err error) {
 }
 
 // RegisteredAppService 注册账户应用服务
-func RegisteredAppService(request vo.RegisteredRequest) {
-	rootID := ""
+func RegisteredAppService(request vo.RegisteredRequest) (respond vo.RegisteredRespond) {
+	rootID := "" // 设置聚合根ID
 	// 0.通过聚合根ID，实例化聚合根
 	account := factory.InstanceAccountAggregate(rootID)
 	// 1.填充聚合内可选参数
@@ -55,10 +54,11 @@ func RegisteredAppService(request vo.RegisteredRequest) {
 		return
 	}
 	// 4.发布注册应用事件
-	if account.Service.Publisher.Registered(viper.GetString("channel.user"), account.Entity.Event) {
-		// 注册事件失败， 返回注册失败
-		return
+	if account.Service.Publisher.Registered(account.Channel, account.Event) {
+		return // 注册事件失败， 返回注册失败
 	}
+	respond = vo.RegisteredRespond{}
+	return
 }
 
 // 事件风暴梳理出来的都可以作为功能

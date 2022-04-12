@@ -2,22 +2,26 @@ package service
 
 //领域服务：主要的业务规则编写
 import (
+	cliAdapter "user-context/rhombic/acl/adapters/clients"
 	pubAdapter "user-context/rhombic/acl/adapters/publishers"
 	repoAdapter "user-context/rhombic/acl/adapters/repositories"
+	"user-context/rhombic/acl/ports/clients"
 	"user-context/rhombic/acl/ports/publishers"
 	"user-context/rhombic/acl/ports/repositories"
 	"user-context/rhombic/domain/account/entity"
 )
 
 type Service struct {
+	Client     clients.UUIDClient             //客户端端口
 	Repository repositories.AccountRepository //资源库端口
 	Publisher  publishers.AccountPublisher    //发布者端口
 }
 
 func NewAccountService() *Service {
 	return &Service{
-		repoAdapter.NewAccountAdapter(),
-		pubAdapter.NewAccountEvent(),
+		Client:     cliAdapter.NewUUIDAdapter(),
+		Repository: repoAdapter.NewAccountAdapter(),
+		Publisher:  pubAdapter.NewAccountEvent(),
 	}
 }
 
