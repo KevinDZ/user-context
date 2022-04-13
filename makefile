@@ -1,3 +1,11 @@
+install protoc:
+	wget https://github.com/protocolbuffers/protobuf/releases/download/v3.20.0/protobuf-all-3.20.0.tar.gz
+	tar zxvf protobuf-all-3.20.0.tar.gz
+
+check:
+	go install google.goalng.org/protobuf/cmd/protoc-gen-go@v1.28
+	go install google.goalng.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+
 gen_proto:
 	protoc --go_out=rhombic/ohs/local/pl/dto --go-grpc_out=rhombic/ohs/local/pl/dto rhombic/ohs/local/pl/dto/*.proto
 	protoc --go_out=rhombic/acl/adapters/pl/dto --go-grpc_out=rhombic/acl/adapters/pl/dto rhombic/acl/adapters/pl/dto/*.proto

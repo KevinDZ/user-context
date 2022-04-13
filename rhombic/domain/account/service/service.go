@@ -12,16 +12,23 @@ import (
 )
 
 type Service struct {
+	// 资源服务
 	Client     clients.UUIDClient             //客户端端口
 	Repository repositories.AccountRepository //资源库端口
-	Publisher  publishers.AccountPublisher    //发布者端口
+	// 事件服务
+	Publisher publishers.AccountPublisher //事件：发布者端口
 }
 
 func NewAccountService() *Service {
 	return &Service{
 		Client:     cliAdapter.NewUUIDAdapter(),
 		Repository: repoAdapter.NewAccountAdapter(),
-		Publisher:  pubAdapter.NewAccountEvent(),
+	}
+}
+
+func NewAccountEvent() *Service {
+	return &Service{
+		Publisher: pubAdapter.NewAccountEvent(),
 	}
 }
 

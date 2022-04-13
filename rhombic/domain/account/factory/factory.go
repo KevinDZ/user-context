@@ -1,6 +1,7 @@
 package factory
 
 import (
+	"errors"
 	"github.com/spf13/viper"
 	"user-context/rhombic/domain"
 	"user-context/rhombic/domain/account/entity"
@@ -27,9 +28,9 @@ func InstanceAccountAggregate(rootID string) *Factory {
 
 // WithAccountOptions init account aggregate with account params
 func (factory *Factory) WithAccountOptions(name, passwd, phone, email, thirdParty string) *Factory {
-	factory.Entity.Name = name
+	factory.Entity.NickName = name
 	factory.Entity.PassWord = passwd
-	factory.Entity.Phone = phone
+	factory.Entity.Mobile = phone
 	factory.Entity.Email = email
 	factory.Entity.ThirdPartyID = thirdParty
 	return factory
@@ -38,28 +39,38 @@ func (factory *Factory) WithAccountOptions(name, passwd, phone, email, thirdPart
 // InstanceOf 实例化聚合和启动领域服务
 func (factory *Factory) InstanceOf() (err error) {
 	if len(factory.Root.RootID) == 0 {
+		err = errors.New("aggregate root id is null")
 		return
 	}
 	if factory.Entity != nil {
+		err = errors.New("entity no equal null")
 		return
 	}
 	factory.Service = service.NewAccountService()
 	if factory.Service == nil || factory.Service.Repository == nil || factory.Service.Publisher == nil {
+		err = errors.New("service equal null")
 		return
 	}
 	factory.Entity = &entity.Entity{ID: factory.Root.GetAggregateRootID()}
 	return
 }
 
+// InstanceOfEvent 实例化事件
+func (factory *Factory) InstanceOfEvent() (err error) {
+	factory.Service = service.NewAccountEvent()
+	if factory.Service.Publisher == nil {
+		err = errors.New("publisher instance failed")
+	}
+	return
+}
+
 // Registered 调用注册的领域服务
 func (factory *Factory) Registered() (err error) {
-	if factory.Service == nil || factory.Service.Repository == nil || factory.Service.Publisher == nil {
-		return
-	}
 	// 用户唯一身份标识：获取uuid
 	factory.Entity.ID = factory.Service.Client.GetUUID()
 	// 领域服务：用户注册的持久化
 	if err = factory.Service.Registered(*factory.Entity); err != nil {
+		err = errors.New("domain service save persistence data failed")
 		return
 	}
 	// 设置实体领域行为：注册事件
@@ -69,4 +80,8 @@ func (factory *Factory) Registered() (err error) {
 	factory.Event = map[string]string{factory.Entity.ID: viper.GetString("event.registered")}
 	return
 
+}
+
+func (factory *Factory) RegisteredEvent() (err error) {
+	return factory.Service.Publisher.Registered(factory.Channel, factory.Event)
 }

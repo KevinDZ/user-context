@@ -1,3 +1,4 @@
+// Package common 改成配置中心设计
 package common
 
 import (
