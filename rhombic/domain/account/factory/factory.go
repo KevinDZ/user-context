@@ -3,6 +3,7 @@ package factory
 import (
 	"errors"
 	"github.com/spf13/viper"
+	"time"
 	"user-context/rhombic/domain"
 	"user-context/rhombic/domain/account/entity"
 	"user-context/rhombic/domain/account/service"
@@ -43,12 +44,12 @@ func (factory *Factory) InstanceOf() (err error) {
 		return
 	}
 	if factory.Entity != nil {
-		err = errors.New("entity no equal null")
+		err = errors.New("entity is exist")
 		return
 	}
 	factory.Service = service.NewAccountService()
 	if factory.Service == nil || factory.Service.Repository == nil || factory.Service.Publisher == nil {
-		err = errors.New("service equal null")
+		err = errors.New("service not started")
 		return
 	}
 	factory.Entity = &entity.Entity{ID: factory.Root.GetAggregateRootID()}
@@ -87,5 +88,15 @@ func (factory *Factory) Registered() (err error) {
 }
 
 func (factory *Factory) RegisteredEvent() (err error) {
-	return factory.Service.Publisher.Registered(factory.Channel, factory.Event)
+	count := 0
+RETRY:
+	err = factory.Service.Publisher.Registered(factory.Channel, factory.Event)
+	if err != nil {
+		for count < 5 {
+			time.Sleep(time.Duration(2<<count) * time.Second)
+			count++
+			goto RETRY
+		}
+	}
+	return
 }
