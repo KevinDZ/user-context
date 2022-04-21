@@ -87,8 +87,8 @@ func (factory *Factory) Registered() (err error) {
 
 }
 
-func (factory *Factory) RegisteredEvent() (err error) {
-	count := 0
+// RegisteredEvent 注册事件，失败后重试机制
+func (factory *Factory) RegisteredEvent(count int64) (err error) {
 RETRY:
 	err = factory.Service.Publisher.Registered(factory.Channel, factory.Event)
 	if err != nil {

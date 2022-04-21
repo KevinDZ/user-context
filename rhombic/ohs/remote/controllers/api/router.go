@@ -2,14 +2,33 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"user-context/rhombic/ohs/local/pl"
 	"user-context/rhombic/ohs/local/pl/vo"
 	"user-context/rhombic/ohs/local/services"
 	"user-context/utils/common"
-
-	"github.com/gin-gonic/gin"
 )
+
+func Init(g *gin.Engine) {
+	prefixPath := viper.GetString("prefix_path")
+	fmt.Println("prefix path: ", prefixPath)
+	apiGroup := g.Group(prefixPath)
+	router(apiGroup)
+	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
+
+func router(Router *gin.RouterGroup) {
+	v1 := Router.Group("/v1")
+	v1.POST("/register", RegisteredController)
+	v1.POST("/login", LoginController)
+	v1.POST("/logout", LogoutController)
+}
 
 // RegisteredController 注册控制器
 func RegisteredController(ctx *gin.Context) {
