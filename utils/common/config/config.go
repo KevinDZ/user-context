@@ -1,5 +1,5 @@
-// Package common 改成配置中心设计
-package common
+// Package config 改成配置中心设计
+package config
 
 import (
 	"fmt"
@@ -41,7 +41,7 @@ func Init(cfgFile string) {
 	fmt.Println("namespace env: ", namespace)
 	if cfgFile == "" {
 		path, _ := os.Getwd()
-		cfgFile = path + "/utils/common/config.yaml" // TODO 配置文件的设置
+		cfgFile = path + "/utils/common/config/config.yaml" // TODO 配置文件的设置
 		fmt.Println(cfgFile)
 
 	}

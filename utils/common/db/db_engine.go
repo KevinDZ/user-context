@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 	"user-context/rhombic/acl/adapters/pl/dao"
-	"user-context/utils/common"
+	"user-context/utils/common/config"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ var (
 // ConnectDB return orm.DB
 func ConnectDB() (*gorm.DB, error) {
 	var err error
-	config := common.FileConfig
+	config := config.FileConfig
 	if err != nil {
 		return nil, err
 	}

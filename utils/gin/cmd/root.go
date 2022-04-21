@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"user-context/rhombic/ohs/remote/controllers/router"
-	"user-context/utils/common"
+	"user-context/utils/common/config"
 	"user-context/utils/common/redis"
 )
 
@@ -33,7 +33,7 @@ func init() {
 // 初始化配置
 func initConfig() {
 	fmt.Println("init config...")
-	common.Init(cfgFile)
+	config.Init(cfgFile)
 }
 
 func runServer() {

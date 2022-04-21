@@ -35,11 +35,11 @@ func TestAccountAdapter_Insert(t *testing.T) {
 	repository := mock.NewMockAccountRepository(ctrl)
 
 	//期望值
-	repository.EXPECT().Insert(entity.Entity{ID: "", Name: "bba", PassWord: "abc_abc_abc", Phone: "152000111000", Email: "", ThirdPartyID: ""}).Return(nil)
+	repository.EXPECT().Insert(entity.Entity{ID: "", NickName: "bba", PassWord: "abc_abc_abc", Mobile: "152000111000", Email: "", ThirdPartyID: ""}).Return(nil)
 	repository.EXPECT().Insert(entity.Entity{}).Return(errors.New("struct exception"))
 
 	//输出结果
-	if err := repository.Insert(entity.Entity{ID: "", Name: "bba", PassWord: "abc_abc_abc", Phone: "152000111000", Email: "", ThirdPartyID: ""}); err != nil {
+	if err := repository.Insert(entity.Entity{ID: "", NickName: "bba", PassWord: "abc_abc_abc", Mobile: "152000111000", Email: "", ThirdPartyID: ""}); err != nil {
 		fmt.Println("err: ", err)
 		return
 	} else {

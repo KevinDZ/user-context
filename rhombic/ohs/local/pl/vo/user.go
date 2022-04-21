@@ -17,8 +17,13 @@ type RegisteredRequest struct {
 	Email   string `json:"email,omitempty"`   //TODO 无邮箱
 
 	// header 信息
-	IP         string `json:"ip"`
 	ClientType string `json:"client_type,omitempty"`
+	SiteCode   string `json:"site_code"`
+
+	// 运维日志信息
+	IP      string
+	Method  string
+	Proxies string
 }
 
 // LoginRespond 账户登录响应
@@ -49,13 +54,30 @@ type LoginRequest struct {
 	Password string `json:"password,omitempty"`
 	Email    string `json:"email,omitempty"`
 	Phone    string `json:"phone,omitempty"`
+
+	// header 信息
+	ClientType string `json:"client_type,omitempty"`
+	SiteCode   string `json:"site_code"`
+
+	// 运维日志信息
+	IP      string
+	Method  string
+	Proxies string
 }
 
 // LogoutRequest 账户登出请求
 type LogoutRequest struct {
 	ID string `json:"id,omitempty"`
+
+	// header 信息
+	ClientType string `json:"client_type,omitempty"`
+	SiteCode   string `json:"site_code"`
+
+	// 运维日志信息
+	IP      string
+	Method  string
+	Proxies string
 }
 
 // LogoutRespond 账户登出响应
-type LogoutRespond struct {
-}
+type LogoutRespond struct{}

@@ -4,26 +4,20 @@ import (
 	"log"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/sirupsen/logrus"
 )
 
 // Logger 服务日志服务，可适配其他日志组件
 type Logger interface {
-	Infof(format string, args ...interface{})
-	Infoln(args ...interface{})
-	Debugf(format string, args ...interface{})
-	Debugln(args ...interface{})
-	Errorf(format string, args ...interface{})
-	Errorln(args ...interface{})
-	Warnf(format string, args ...interface{})
-	Warnln(args ...interface{})
-	Tracef(format string, args ...interface{})
-	Traceln(args ...interface{})
-	Panicf(format string, args ...interface{})
-	Panicln(args ...interface{})
-	Fatalf(format string, args ...interface{})
-	Fatalln(args ...interface{})
+	Infoln(method, clientType, sitCode, client, service, proxies, message string)
+	Debugln(method, clientType, sitCode, client, service, proxies, message string)
+	Errorln(method, clientType, sitCode, client, service, proxies, message string, code int64)
+	Warnln(method, clientType, sitCode, client, service, proxies, message string)
+	Traceln(method, clientType, sitCode, client, service, proxies, message string)
+	Panicln(method, clientType, sitCode, client, service, proxies, message string, code int64)
+	Fatalln(method, clientType, sitCode, client, service, proxies, message string, code int64)
 }
 
 var (
@@ -44,116 +38,140 @@ type serverLog struct {
 	logger *logrus.Logger
 }
 
-// Infof 普通信息
-func (l *serverLog) Infof(format string, args ...interface{}) {
-	if l.logger == nil {
-		return
-	}
-	l.logger.Infof(format, args...)
-}
-
 // Infoln 普通信息
-func (l *serverLog) Infoln(args ...interface{}) {
+func (l *serverLog) Infoln(method, clientType, sitCode, client, service, proxies, message string) {
 	if l.logger == nil {
 		return
 	}
-	l.logger.Infoln(args...)
-}
-
-// Warnf 警告信息
-func (l *serverLog) Warnf(format string, args ...interface{}) {
-	if l.logger == nil {
-		return
+	format := Format{
+		Level:      "Infoln",
+		Now:        time.Now().Unix(),
+		Method:     method,
+		ClientType: clientType,
+		SiteCode:   sitCode,
+		Client:     client,
+		Service:    service,
+		Proxies:    proxies,
+		Message:    message,
 	}
-	l.logger.Warnf(format, args...)
+	l.logger.Infof("%+v\n", format)
 }
 
 // Warnln 警告信息
-func (l *serverLog) Warnln(args ...interface{}) {
+func (l *serverLog) Warnln(method, clientType, sitCode, client, service, proxies, message string) {
 	if l.logger == nil {
 		return
 	}
-	l.logger.Warnln(args...)
-}
-
-// Errorf 错误信息
-func (l *serverLog) Errorf(format string, args ...interface{}) {
-	if l.logger == nil {
-		return
+	format := Format{
+		Level:      "Warnln",
+		Now:        time.Now().Unix(),
+		Method:     method,
+		ClientType: clientType,
+		SiteCode:   sitCode,
+		Client:     client,
+		Service:    service,
+		Proxies:    proxies,
+		Message:    message,
 	}
-	l.logger.Errorf(format, args...)
+	l.logger.Warnf("%+v\n", format)
 }
 
 // Errorln 错误信息
-func (l *serverLog) Errorln(args ...interface{}) {
+func (l *serverLog) Errorln(method, clientType, sitCode, client, service, proxies, message string, code int64) {
 	if l.logger == nil {
 		return
 	}
-	l.logger.Errorln(args...)
-}
-
-// Debugf 调试信息
-func (l *serverLog) Debugf(format string, args ...interface{}) {
-	if l.logger == nil {
-		return
+	format := Format{
+		Level:      "Errorln",
+		Now:        time.Now().Unix(),
+		Method:     method,
+		ClientType: clientType,
+		SiteCode:   sitCode,
+		Client:     client,
+		Service:    service,
+		Proxies:    proxies,
+		Message:    message,
+		Code:       code,
 	}
-	l.logger.Debugf(format, args...)
+	l.logger.Errorf("%+v\n", format)
 }
 
 // Debugln 调试信息
-func (l *serverLog) Debugln(args ...interface{}) {
+func (l *serverLog) Debugln(method, clientType, sitCode, client, service, proxies, message string) {
 	if l.logger == nil {
 		return
 	}
-	l.logger.Debugln(args...)
-}
-
-// Tracef 跟踪信息
-func (l *serverLog) Tracef(format string, args ...interface{}) {
-	if l.logger == nil {
-		return
+	format := Format{
+		Level:      "Debugf",
+		Now:        time.Now().Unix(),
+		Method:     method,
+		ClientType: clientType,
+		SiteCode:   sitCode,
+		Client:     client,
+		Service:    service,
+		Proxies:    proxies,
+		Message:    message,
 	}
-	l.logger.Tracef(format, args...)
+	l.logger.Debugf("%+v\n", format)
 }
 
 // Traceln 跟踪信息
-func (l *serverLog) Traceln(args ...interface{}) {
+func (l *serverLog) Traceln(method, clientType, sitCode, client, service, proxies, message string) {
 	if l.logger == nil {
 		return
 	}
-	l.logger.Traceln(args...)
-}
-
-// Fatalf 致命错误
-func (l *serverLog) Fatalf(format string, args ...interface{}) {
-	if l.logger == nil {
-		return
+	format := Format{
+		Level:      "Traceln",
+		Now:        time.Now().Unix(),
+		Method:     method,
+		ClientType: clientType,
+		SiteCode:   sitCode,
+		Client:     client,
+		Service:    service,
+		Proxies:    proxies,
+		Message:    message,
 	}
-	l.logger.Fatalf(format, args...)
+	l.logger.Tracef("%+v\n", format)
 }
 
 // Fatalln 致命错误
-func (l *serverLog) Fatalln(args ...interface{}) {
+func (l *serverLog) Fatalln(method, clientType, sitCode, client, service, proxies, message string, code int64) {
 	if l.logger == nil {
 		return
 	}
-	l.logger.Fatalln(args...)
-}
-
-// Panicf 恐慌错误
-func (l *serverLog) Panicf(format string, args ...interface{}) {
-	if l.logger == nil {
-		return
+	format := Format{
+		Level:      "Fatalln",
+		Now:        time.Now().Unix(),
+		Method:     method,
+		ClientType: clientType,
+		SiteCode:   sitCode,
+		Client:     client,
+		Service:    service,
+		Proxies:    proxies,
+		Message:    message,
+		Code:       code,
 	}
-	l.logger.Panicf(format, args...)
+	l.logger.Fatalf("%+v\n", format)
 }
 
 // Panicln 恐慌错误
-func (l *serverLog) Panicln(args ...interface{}) {
+func (l *serverLog) Panicln(method, clientType, sitCode, client, service, proxies, message string, code int64) {
 	if l.logger == nil {
 		return
 	}
-	l.logger.Panicln(args...)
+	format := Format{
+		Level:      "Panicln",
+		Now:        time.Now().Unix(),
+		Method:     method,
+		ClientType: clientType,
+		SiteCode:   sitCode,
+		Client:     client,
+		Service:    service,
+		Proxies:    proxies,
+		Message:    message,
+		Code:       code,
+	}
+	l.logger.Panicf("%+v\n", format)
 }
 
 func initLogger() {

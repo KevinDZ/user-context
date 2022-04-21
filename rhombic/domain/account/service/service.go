@@ -28,7 +28,8 @@ func NewAccountService() *Service {
 
 func NewAccountEvent() *Service {
 	return &Service{
-		Publisher: pubAdapter.NewAccountEvent(),
+		Publisher:  pubAdapter.NewAccountEvent(),
+		Repository: repoAdapter.NewAccountAdapter(),
 	}
 }
 
@@ -44,7 +45,7 @@ func (service *Service) Registered(entity entity.Entity) (err error) {
 }
 
 // Query 查询账户
-func (service *Service) Query(id string) entity.Entity {
+func (service *Service) Query(id string) *entity.Entity {
 	return service.Repository.Query(id)
 }
 

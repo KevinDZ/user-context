@@ -61,6 +61,9 @@ func (factory *Factory) InstanceOfEvent() (err error) {
 	if factory.Service.Publisher == nil {
 		err = errors.New("publisher instance failed")
 	}
+	if factory.Service.Repository == nil {
+		err = errors.New("repository instance failed")
+	}
 	return
 }
 
@@ -74,6 +77,7 @@ func (factory *Factory) Registered() (err error) {
 		return
 	}
 	// 设置实体领域行为：注册事件
+	// 用户初始化配置分配：空间、套餐
 	// 1.发布通道
 	factory.Channel = viper.GetString("channel.user")
 	// 2.事件消息

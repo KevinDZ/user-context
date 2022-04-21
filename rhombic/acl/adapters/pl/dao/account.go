@@ -1,12 +1,12 @@
 package dao
 
 import (
-	"errors"
-	"fmt"
 	"github.com/go-redis/redis"
 )
 
-type Account struct{}
+type Account struct {
+	ID string
+}
 
 func (account *Account) TableName() string {
 	return "account"
@@ -25,24 +25,16 @@ func NewRedisDAO() *RedisDAO {
 	}
 }
 
-func (dao *RedisDAO) MobileVerify(mobile, captcha string) (err error) {
-	// redis 实例化
-	client := redis.NewClient(&redis.Options{})
-	value := client.Get(fmt.Sprintf("%v%v", mobile, captcha))
-	err = value.Err()
-	if err != nil {
-		return
-	}
-	if value.String() != captcha {
-		err = errors.New("CaptchaCodeError")
-		return
-	}
-	return
-}
-
-// PostgreSQLDAO PostgreSQL数据库
-type PostgreSQLDAO struct {
-	ID string
+// UserDAO 用户数据表
+type UserDAO struct {
+	UserID     string
+	UUID       string
+	ClientType string
+	Nickname   string
+	Mobile     string
+	Email      string
+	AvatarUrl  string
+	SiteCode   string
 }
 
 // LoginRecordDAO 账户登录记录表

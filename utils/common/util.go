@@ -46,3 +46,29 @@ func GetProjectAbPathByCaller() (abPath string) {
 	}
 	return
 }
+
+// GenerateRandomString 根据不同长度生成随机字符串
+func GenerateRandomString(length int, types string) (result string) {
+	var seeds []rune
+	switch types {
+	case "num":
+		seeds = []rune("1234567890")
+	case "abc":
+		seeds = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	case "word":
+		seeds = []rune("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	default:
+		seeds = []rune("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@$%^&*()_+=-")
+
+	}
+	b := make([]rune, length)
+	for i := 0; i < length; i++ {
+		b[i] = seeds[rand.Intn(len(seeds))]
+	}
+	return string(b)
+}
+
+// PassWordEncryption TODO 注册密码加密
+func PassWordEncryption(password string) string {
+	return password
+}

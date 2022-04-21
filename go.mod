@@ -15,6 +15,7 @@ require (
 	github.com/swaggo/gin-swagger v1.4.1
 	golang.org/x/sys v0.0.0-20220408201424-a24fb2fb8a0f // indirect
 	golang.org/x/tools v0.1.10 // indirect
+	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.28.0
 	gorm.io/driver/postgres v1.3.4
