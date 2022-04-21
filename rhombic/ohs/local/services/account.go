@@ -80,7 +80,7 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 		return
 	}
 	// 7.发布注册应用事件：空间、套餐
-	if err = account.RegisteredEvent(5); err != nil {
+	if err = account.RegisteredEvent(); err != nil {
 		return // 注册事件失败， 返回注册失败
 	}
 	result = vo.LoginRequest{}

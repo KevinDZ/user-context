@@ -3,7 +3,6 @@ package factory
 import (
 	"errors"
 	"github.com/spf13/viper"
-	"time"
 	"user-context/rhombic/domain"
 	"user-context/rhombic/domain/account/entity"
 	"user-context/rhombic/domain/account/service"
@@ -87,16 +86,7 @@ func (factory *Factory) Registered() (err error) {
 
 }
 
-// RegisteredEvent 注册事件，失败后重试机制
-func (factory *Factory) RegisteredEvent(count int64) (err error) {
-RETRY:
-	err = factory.Service.Publisher.Registered(factory.Channel, factory.Event)
-	if err != nil {
-		for count < 5 {
-			time.Sleep(time.Duration(2<<count) * time.Second)
-			count++
-			goto RETRY
-		}
-	}
-	return
+// RegisteredEvent 注册事件
+func (factory *Factory) RegisteredEvent() (err error) {
+	return factory.Service.Publisher.Registered(factory.Channel, factory.Event)
 }

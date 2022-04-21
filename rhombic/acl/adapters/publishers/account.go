@@ -3,6 +3,7 @@ package publishers
 import (
 	"github.com/go-redis/redis"
 	"sync"
+	"time"
 	"user-context/rhombic/acl/ports/publishers"
 )
 
@@ -25,12 +26,31 @@ func NewAccountEvent() publishers.AccountPublisher {
 	return pub
 }
 
+// Registered 注册事件，失败后重试机制的实现逻辑
 func (event AccountEvent) Registered(channel string, msg map[string]string) (err error) {
-	event.Publish(channel, msg)
+	count := 5
+RETRY:
+	err = event.Publish(channel, msg).Err()
+	if err != nil {
+		for count < 5 {
+			time.Sleep(time.Duration(2<<count) * time.Second)
+			count++
+			goto RETRY
+		}
+	}
 	return
 }
 
 func (event AccountEvent) BindWechat(channel string, msg map[string]string) (err error) {
-	event.Publish(channel, msg)
+	count := 5
+RETRY:
+	err = event.Publish(channel, msg).Err()
+	if err != nil {
+		for count < 5 {
+			time.Sleep(time.Duration(2<<count) * time.Second)
+			count++
+			goto RETRY
+		}
+	}
 	return
 }
