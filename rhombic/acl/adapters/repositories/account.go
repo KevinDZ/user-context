@@ -200,10 +200,20 @@ func (d *DAO) MobileVerify(mobile, captcha string) (err error) {
 	return
 }
 
-// EventMessage 记录事件消息
-func (d *DAO) EventMessage() (err error) {
+// 保证MQ事件不丢失
+
+// EventCreate 应用事件消息创建
+func (d *DAO) EventCreate() (err error) {
 	err = d.BD.Create(&dao.LoginRecordDAO{
 		// TODO
+		Status: "try",
 	}).Error
+	return
+}
+
+// EventComplete 应用事件完成
+func (d *DAO) EventComplete() (err error) {
+	dao := &dao.LoginRecordDAO{ID: d.User.UserID}
+	err = d.BD.Model(dao).Update("status", "conform").Error
 	return
 }

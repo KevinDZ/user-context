@@ -1,9 +1,11 @@
-package api
+package controllers
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
+	"user-context/rhombic/ohs/local/pl/errors"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -32,18 +34,22 @@ func router(Router *gin.RouterGroup) {
 
 // RegisteredController 注册控制器
 func RegisteredController(ctx *gin.Context) {
-	// 1.注册
 	var request vo.RegisteredRequest
 	request.Method = ctx.Request.Method
 	request.IP = ctx.Request.RemoteAddr
 	request.Proxies = ctx.Request.URL.RequestURI()
+	// 0.解析参数
 	if err := ctx.ShouldBind(request); err != nil {
 		common.Errorln(request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, err.Error(), 500)
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
+
+	// 捕获异常
+	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
+
 	request.RootID = "user" // TODO 设置聚合根ID
-	// 注册用户，密码加密
+	// 1.注册用户，密码加密
 	request.PassWord = common.PassWordEncryption(request.PassWord)
 	res, err := services.RegisteredAppService(request)
 	if err != nil {
@@ -89,12 +95,36 @@ func LoginController(ctx *gin.Context) {
 	request.IP = ctx.Request.RemoteAddr
 	request.Proxies = ctx.Request.URL.RequestURI()
 	if err := ctx.ShouldBind(request); err != nil {
+		ctx.JSON(http.StatusBadRequest, common.Format{
+			Level:      "",
+			Now:        time.Now().Unix(),
+			Method:     request.Method,
+			ClientType: "",
+			Client:     request.IP,
+			Proxies:    request.Proxies,
+			Message:    err.Error(),
+			Code:       500,
+		})
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
+
+	// 捕获异常
+	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
+
 	request.RootID = "user" // TODO 设置聚合根ID
 	result, token, err := services.LoginAppService(request)
 	if err != nil {
+		ctx.JSON(http.StatusBadRequest, common.Format{
+			Level:      "",
+			Now:        time.Now().Unix(),
+			Method:     request.Method,
+			ClientType: "",
+			Client:     request.IP,
+			Proxies:    request.Proxies,
+			Message:    err.Error(),
+			Code:       500,
+		})
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
@@ -127,6 +157,10 @@ func LogoutController(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
+
+	// 捕获异常
+	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
+
 	if err := services.LogoutAppService(request); err != nil {
 		common.Errorln(request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, err.Error(), 500)
 		ctx.JSON(http.StatusBadRequest, err)

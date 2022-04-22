@@ -4,14 +4,11 @@ import (
 	"user-context/rhombic/acl/adapters/pl/dao"
 	"user-context/rhombic/acl/adapters/repositories"
 	"user-context/rhombic/domain/account/factory"
-	"user-context/rhombic/ohs/local/pl/errors"
 	"user-context/rhombic/ohs/local/pl/vo"
 )
 
 // LoginAppService 登录应用服务
 func LoginAppService(request vo.LoginRequest) (user dao.UserDAO, token string, err error) {
-	// 捕获异常
-	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
 	// 实例化数据库
 	dao := repositories.NewDAO("db")
 	// 1. 用户账户表:判断账户是否存在
@@ -35,8 +32,6 @@ func LoginAppService(request vo.LoginRequest) (user dao.UserDAO, token string, e
 
 // LogoutAppService 登出应用服务
 func LogoutAppService(request vo.LogoutRequest) (err error) {
-	// 捕获异常
-	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
 	// 清除redis保存的account token
 	dao := repositories.NewDAO("redis")
 	defer dao.Redis.Close()
@@ -49,8 +44,6 @@ func LogoutAppService(request vo.LogoutRequest) (err error) {
 
 // RegisteredAppService 注册账户应用服务
 func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest, err error) {
-	// 捕获异常
-	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
 	// 0.通过聚合根ID，实例化聚合根
 	account := factory.InstanceAccountAggregate(request.RootID)
 	// 1.通过聚合，实例化聚合和领域服务
@@ -76,12 +69,16 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 	}
 	// 6.记录注册事件，保证事件消息不丢失
 	dao = repositories.NewDAO("db")
-	if err = dao.EventMessage(); err != nil {
+	if err = dao.EventCreate(); err != nil {
 		return
 	}
 	// 7.发布注册应用事件：空间、套餐
 	if err = account.RegisteredEvent(); err != nil {
 		return // 注册事件失败， 返回注册失败
+	}
+	// 8.注册应用事件完成
+	if err = dao.EventComplete(); err != nil {
+		return
 	}
 	result = vo.LoginRequest{}
 	return

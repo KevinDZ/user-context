@@ -39,5 +39,7 @@ type UserDAO struct {
 
 // LoginRecordDAO 账户登录记录表
 type LoginRecordDAO struct {
-	ID int64
+	ID string
+
+	Status string // 状态： try、conform、cancel
 }

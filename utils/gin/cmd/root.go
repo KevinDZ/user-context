@@ -3,11 +3,11 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"user-context/rhombic/ohs/remote/controllers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"user-context/rhombic/ohs/remote/controllers/api"
 	"user-context/utils/common/config"
 	"user-context/utils/common/redis"
 )
@@ -51,7 +51,7 @@ func runServer() {
 	fmt.Println("runmode: ", viper.GetString("runmode"))
 	// 路由设置
 	g := gin.Default()
-	api.Init(g)
+	controllers.Init(g)
 	g.Run(fmt.Sprintf(":%d", serverPort))
 
 }

@@ -57,3 +57,8 @@ func Init(cfgFile string) {
 		os.Exit(1)
 	}
 }
+
+// ConfigurationContre 配置中心
+func ConfigurationContre() {
+	// TODO 远程获取配置中心的参数，启动服务
+}
