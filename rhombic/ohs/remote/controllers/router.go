@@ -21,19 +21,28 @@ func Init(g *gin.Engine) {
 	prefixPath := viper.GetString("prefix_path")
 	fmt.Println("prefix path: ", prefixPath)
 	apiGroup := g.Group(prefixPath)
-	router(apiGroup)
+	router(apiGroup) // realihub-用户上下文
+	open(apiGroup)   // TODO 开放平台-用户上下文
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
 
-func router(Router *gin.RouterGroup) {
-	v1 := Router.Group("/v1")
-	v1.POST("/register", RegisteredController)
-	v1.POST("/login", LoginController)
-	v1.POST("/logout", LogoutController)
+func open(Router *gin.RouterGroup) {
+	open := Router.Group("/open")
+	open.POST("/index", func(context *gin.Context) {
+		// TODO
+	})
 }
 
-// RegisteredController 注册控制器
-func RegisteredController(ctx *gin.Context) {
+// realihub系统的用户上下文
+func router(Router *gin.RouterGroup) {
+	v1 := Router.Group("/v1")
+	v1.POST("/register", registeredController)
+	v1.POST("/login", loginController)
+	v1.POST("/logout", logoutController)
+}
+
+// registeredController 注册控制器
+func registeredController(ctx *gin.Context) {
 	var request vo.RegisteredRequest
 	request.Method = ctx.Request.Method
 	request.IP = ctx.Request.RemoteAddr
@@ -87,8 +96,8 @@ func RegisteredController(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, respondJson)
 }
 
-// LoginController 登录控制器
-func LoginController(ctx *gin.Context) {
+// loginController 登录控制器
+func loginController(ctx *gin.Context) {
 	// 解析http通信获取的数据，转义成应用服务可识别的数据
 	var request vo.LoginRequest
 	request.Method = ctx.Request.Method
@@ -146,8 +155,8 @@ func LoginController(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, respondJson)
 }
 
-// LogoutController 登出控制器
-func LogoutController(ctx *gin.Context) {
+// logoutController 登出控制器
+func logoutController(ctx *gin.Context) {
 	var request vo.LogoutRequest
 	request.Method = ctx.Request.Method
 	request.IP = ctx.Request.RemoteAddr
