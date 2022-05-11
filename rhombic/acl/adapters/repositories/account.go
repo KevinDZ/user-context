@@ -8,7 +8,6 @@ import (
 	"gorm.io/gorm"
 	"io/ioutil"
 	"net/http"
-	"sync"
 	"time"
 
 	goRedis "github.com/go-redis/redis"
@@ -27,21 +26,21 @@ type AccountAdapter struct {
 	db *gorm.DB
 }
 
-var (
-	once sync.Once
-	repo repositories.AccountRepository
-)
+//var (
+//	once sync.Once
+//	repo repositories.AccountRepository
+//)
 
 // 检查是否实现了接口
 var _ repositories.AccountRepository = (*AccountAdapter)(nil)
 
 func NewAccountAdapter() repositories.AccountRepository {
-	once.Do(func() {
-		repo = &AccountAdapter{
-			// 创建数据库引擎
-			db: db.NewDBEngine(),
-		}
-	})
+	//once.Do(func() {
+	repo := &AccountAdapter{
+		// 创建数据库引擎
+		db: db.NewDBEngine(),
+	}
+	//})
 	return repo
 }
 

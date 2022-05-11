@@ -53,12 +53,12 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 	// 1.1 实例化领域服务：端口与适配器实现
 	account.Service.Repository = repositories.NewAccountAdapter()
 	if account.Service.Repository == nil {
-		err = errors.New("service not started")
+		err = errors.New("repository instance failed")
 		return
 	}
 	account.Service.Client = clients.NewUUIDAdapter()
 	if account.Service.Client == nil {
-		err = errors.New("service not started")
+		err = errors.New("client instance failed")
 		return
 	}
 
@@ -71,7 +71,7 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 
 	// 3.考虑手机验证码校验 直接调用 不进领域层
 	db := repositories.NewDAO("redis")
-	defer db.Redis.Close()
+	defer db.Redis.Close() // 关闭redis连接
 	if err = db.MobileVerify(request.Mobile, request.MobileCaptcha); err != nil {
 		return
 	}

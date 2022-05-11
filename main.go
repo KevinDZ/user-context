@@ -1,10 +1,13 @@
 package main
 
 import (
+	"runtime"
 	"user-context/server"
 )
 
 func main() {
+	// 开启多核
+	runtime.GOMAXPROCS(runtime.NumCPU())
 	// 依赖服务
 	go server.StartServe()
 
