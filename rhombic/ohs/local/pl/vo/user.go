@@ -4,7 +4,6 @@ package vo
 
 // RegisteredRequest 账户注册请求
 type RegisteredRequest struct {
-	RootID        string
 	Mobile        string `json:"mobile"`             //手机号码
 	MobileCaptcha string `json:"mobile_captcha"`     //验证码
 	PassWord      string `json:"pass_word"`          // 密码

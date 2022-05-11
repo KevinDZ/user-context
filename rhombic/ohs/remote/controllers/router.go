@@ -57,7 +57,7 @@ func registeredController(ctx *gin.Context) {
 	// 捕获异常
 	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
 
-	request.RootID = "user" // TODO 设置聚合根ID
+	request.RootID = "" // TODO 设置聚合根ID
 	// 1.注册用户，密码加密
 	request.PassWord = common.PassWordEncryption(request.PassWord)
 	res, err := services.RegisteredAppService(request)
@@ -121,7 +121,7 @@ func loginController(ctx *gin.Context) {
 	// 捕获异常
 	defer errors.Recover("", request.Method, request.ClientType, request.SiteCode, request.IP, request.Proxies, 500)
 
-	request.RootID = "user" // TODO 设置聚合根ID
+	request.RootID = "" // TODO 设置聚合根ID
 	result, token, err := services.LoginAppService(request)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, common.Format{

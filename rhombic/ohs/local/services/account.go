@@ -48,7 +48,7 @@ func LogoutAppService(request vo.LogoutRequest) (err error) {
 // RegisteredAppService 注册账户应用服务
 func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest, err error) {
 	// 0.通过聚合根ID，实例化聚合根
-	account := factory.InstanceAccountAggregate(request.RootID)
+	account := factory.InstanceAccountAggregate("") // rootID = entity ID
 	// 1.实例化聚合和领域服务
 	// 1.1 实例化领域服务：端口与适配器实现
 	account.Service.Repository = repositories.NewAccountAdapter()

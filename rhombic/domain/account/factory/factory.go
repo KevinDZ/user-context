@@ -54,6 +54,9 @@ func (factory *Factory) InstanceOf() (err error) {
 func (factory *Factory) Registered() (err error) {
 	// 用户唯一身份标识：获取uuid
 	factory.Entity.ID = factory.Service.Client.GetUUID()
+	if factory.Root.GetAggregateRootID() == "" {
+		factory.Root.SetAggregateRootID(factory.Entity.ID)
+	}
 	// 领域服务：用户注册的持久化
 	if err = factory.Service.Registered(*factory.Entity); err != nil {
 		err = errors.New("domain service save persistence data failed")

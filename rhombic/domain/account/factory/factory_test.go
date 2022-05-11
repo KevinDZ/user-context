@@ -9,7 +9,8 @@ import (
 
 func TestFactory_InstanceOf(t *testing.T) {
 	rootID := ""
-	require.Error(t, InstanceAccountAggregate(rootID).InstanceOf(), "")
+	instance := InstanceAccountAggregate(rootID)
+	require.Error(t, instance.InstanceOf(), "")
 	return
 }
 
