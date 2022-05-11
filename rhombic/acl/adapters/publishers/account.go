@@ -1,15 +1,18 @@
 package publishers
 
 import (
-	"github.com/go-redis/redis"
-	"time"
+	"encoding/json"
+	"github.com/spf13/viper"
+	"github.com/streadway/amqp"
 	"user-context/rhombic/acl/ports/publishers"
 )
 
 // AccountEvent 账户发布者，实现账户端口定义的方法
 type AccountEvent struct {
-	// TODO 发布者实体：redis or MQ
-	*redis.Client //TODO 具体调用方法查看文档
+	// rabbitMQ 生产者
+	conn *amqp.Connection
+	ch   *amqp.Channel
+	q    amqp.Queue
 }
 
 //var (
@@ -17,39 +20,56 @@ type AccountEvent struct {
 //	pub  publishers.AccountPublisher
 //)
 
-func NewAccountEvent() publishers.AccountPublisher {
-	//once.Do(func() {
-	// TODO 事件发布者的实体方法 client.Publish(channel, "")
-	pub := &AccountEvent{redis.NewClient(&redis.Options{})}
-	//})
-	return pub
+func NewAccountEvent(name string) publishers.AccountPublisher {
+	// rabbitMQ 连接
+	mq := new(AccountEvent)
+	var err error
+	mq.conn, err = amqp.Dial(viper.GetString("rabbitMQ.url"))
+	if err != nil {
+		return nil
+	}
+	mq.ch, err = mq.conn.Channel()
+	if err != nil {
+		return nil
+	}
+	mq.q, err = mq.ch.QueueDeclare(
+		name,
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+	return mq
+}
+
+func (event AccountEvent) Close() error {
+	return event.conn.Close()
+}
+
+func (event AccountEvent) send(exchange string, msg map[string]string) (err error) {
+	var data []byte
+	data, err = json.Marshal(msg)
+	if err != nil {
+		return
+	}
+	return event.ch.Publish(
+		exchange,
+		event.q.Name,
+		false,
+		false,
+		amqp.Publishing{
+			DeliveryMode: amqp.Persistent,
+			ContentType:  "",
+			Body:         data,
+		})
 }
 
 // Registered 注册事件，失败后重试机制的实现逻辑
-func (event AccountEvent) Registered(channel string, msg map[string]string) (err error) {
-	count := 0
-RETRY:
-	err = event.Publish(channel, msg).Err()
-	if err != nil {
-		if count > 5 {
-			time.Sleep(time.Duration(2<<count) * time.Second)
-			count++
-			goto RETRY
-		}
-	}
-	return
+func (event AccountEvent) Registered(msg map[string]string) (err error) {
+	return event.send(viper.GetString("channel.user"), msg)
 }
 
-func (event AccountEvent) BindWechat(channel string, msg map[string]string) (err error) {
-	count := 5
-RETRY:
-	err = event.Publish(channel, msg).Err()
-	if err != nil {
-		for count < 5 {
-			time.Sleep(time.Duration(2<<count) * time.Second)
-			count++
-			goto RETRY
-		}
-	}
-	return
+func (event AccountEvent) BindWechat(msg map[string]string) (err error) {
+	return event.send(viper.GetString("channel.wechat"), msg)
 }

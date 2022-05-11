@@ -17,8 +17,7 @@ type Factory struct {
 	Service *service.Service
 
 	// 应用事件
-	Channel string
-	Event   map[string]string
+	Event map[string]string
 }
 
 // InstanceAccountAggregate 实例化聚合
@@ -64,9 +63,7 @@ func (factory *Factory) Registered() (err error) {
 	}
 	// 设置实体领域行为：注册事件
 	// 用户初始化配置分配：空间、套餐
-	// 1.发布通道
-	factory.Channel = viper.GetString("channel.user")
-	// 2.事件消息
+	// 1.事件消息
 	factory.Event = map[string]string{factory.Entity.ID: viper.GetString("event.registered")}
 	return
 
@@ -74,5 +71,5 @@ func (factory *Factory) Registered() (err error) {
 
 // RegisteredEvent 注册事件
 func (factory *Factory) RegisteredEvent() (err error) {
-	return factory.Service.Publisher.Registered(factory.Channel, factory.Event)
+	return factory.Service.Publisher.Registered(factory.Event)
 }

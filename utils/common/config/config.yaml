@@ -27,6 +27,7 @@ client:
 
 channel:
   user: "user_topic"
+  wechat: ""
 
 event:
   registered: "registered success"
