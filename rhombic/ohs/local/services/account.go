@@ -82,14 +82,16 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 
 	// 应用事件必须同步实现，不能异步通知
 	// 5.1 事件实例化
-	name := ""
+	name := "" // TODO what is name ?
 	account.Service.Publisher = publishers.NewAccountEvent(name)
 	if account.Service.Publisher == nil {
 		err = errors.New("publisher instance failed")
 		return
 	}
 	// 5.2 事件关闭连接
-	defer account.Service.Publisher.Close()
+	defer account.Service.Publisher.Close()        // 后关闭 connection
+	defer account.Service.Publisher.ChannelClose() // 先关闭 channel
+
 	// 6.发布注册应用事件：空间、套餐
 	if err = account.RegisteredEvent(); err != nil {
 		return // 注册事件失败， 返回注册失败

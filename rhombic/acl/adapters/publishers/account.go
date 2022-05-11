@@ -43,7 +43,11 @@ func NewAccountEvent(name string) publishers.AccountPublisher {
 	return mq
 }
 
-func (event AccountEvent) Close() error {
+func (event AccountEvent) ChannelClose() (err error) {
+	return event.ch.Close()
+}
+
+func (event AccountEvent) Close() (err error) {
 	return event.conn.Close()
 }
 
