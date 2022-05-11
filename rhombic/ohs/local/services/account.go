@@ -80,25 +80,16 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 		return
 	}
 
-	// 保证应用事件消息不丢失
+	// 应用事件必须同步实现，不能异步通知
 	// 5.事件实例化
 	account.Service.Publisher = publishers.NewAccountEvent()
 	if account.Service.Publisher == nil {
 		err = errors.New("publisher instance failed")
 		return
 	}
-	// 6.记录注册事件，保证事件消息不丢失
-	db = repositories.NewDAO("db")
-	if err = db.EventCreate(); err != nil {
-		return
-	}
-	// 7.发布注册应用事件：空间、套餐
+	// 6.发布注册应用事件：空间、套餐
 	if err = account.RegisteredEvent(); err != nil {
 		return // 注册事件失败， 返回注册失败
-	}
-	// 8.注册应用事件完成
-	if err = db.EventComplete(); err != nil {
-		return
 	}
 	result = vo.LoginRequest{}
 	return
