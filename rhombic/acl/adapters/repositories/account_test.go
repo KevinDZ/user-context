@@ -17,14 +17,14 @@ func TestAccountAdapter_CheckIsExist(t *testing.T) {
 	second := "account_0000a"
 
 	//期望值
-	repository.EXPECT().CheckIsExist(entity.Entity{ID: first}).Return(true)
-	repository.EXPECT().CheckIsExist(entity.Entity{ID: second}).Return(false)
+	repository.EXPECT().CheckIsExist(entity.Account{ID: first}).Return(true)
+	repository.EXPECT().CheckIsExist(entity.Account{ID: second}).Return(false)
 
 	//输出结果
-	if repository.CheckIsExist(entity.Entity{ID: first}) {
+	if repository.CheckIsExist(entity.Account{ID: first}) {
 		fmt.Println("first exist")
 	}
-	if repository.CheckIsExist(entity.Entity{ID: second}) {
+	if repository.CheckIsExist(entity.Account{ID: second}) {
 		fmt.Println("second no exist")
 	}
 }
@@ -35,17 +35,17 @@ func TestAccountAdapter_Insert(t *testing.T) {
 	repository := mock.NewMockAccountRepository(ctrl)
 
 	//期望值
-	repository.EXPECT().Insert(entity.Entity{ID: "", NickName: "bba", PassWord: "abc_abc_abc", Mobile: "152000111000", Email: "", ThirdPartyID: ""}).Return(nil)
-	repository.EXPECT().Insert(entity.Entity{}).Return(errors.New("struct exception"))
+	repository.EXPECT().Insert(entity.Account{ID: "", NickName: "bba", PassWord: "abc_abc_abc", Mobile: "152000111000", Email: "", ThirdPartyID: ""}).Return(nil)
+	repository.EXPECT().Insert(entity.Account{}).Return(errors.New("struct exception"))
 
 	//输出结果
-	if err := repository.Insert(entity.Entity{ID: "", NickName: "bba", PassWord: "abc_abc_abc", Mobile: "152000111000", Email: "", ThirdPartyID: ""}); err != nil {
+	if err := repository.Insert(entity.Account{ID: "", NickName: "bba", PassWord: "abc_abc_abc", Mobile: "152000111000", Email: "", ThirdPartyID: ""}); err != nil {
 		fmt.Println("err: ", err)
 		return
 	} else {
 		fmt.Println("insert success")
 	}
-	if err := repository.Insert(entity.Entity{}); err != nil {
+	if err := repository.Insert(entity.Account{}); err != nil {
 		fmt.Println("err: ", err)
 		return
 	} else {

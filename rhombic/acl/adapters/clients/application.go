@@ -2,7 +2,7 @@ package clients
 
 import (
 	"user-context/rhombic/acl/ports/clients"
-	application2 "user-context/rhombic/domain/application/vo"
+	"user-context/rhombic/domain/application/vo"
 )
 
 // ApplicationAdapter 组织适配器，实现组织端口定义的方法
@@ -20,6 +20,6 @@ func NewApplicationAdapter() clients.ApplicationClient {
 	}
 }
 
-func (adapter *ApplicationAdapter) GetList(organizationID string) (list []application2.ValueObject) {
+func (adapter *ApplicationAdapter) GetList(organizationID string) (list []vo.Application) {
 	return
 }

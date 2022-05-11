@@ -28,7 +28,7 @@ func NewSpaceAdapter() clients.SpaceClient {
 	}
 }
 
-func (adapter *SpaceAdapter) GetList(organizationID string) (objects []vo.ValueObject) {
+func (adapter *SpaceAdapter) GetList(organizationID string) (objects []vo.Space) {
 	// 1.请求参数
 	request := &dto.SpaceRequest{OrganizationID: organizationID}
 	// 2.proto 服务的方法
@@ -45,11 +45,11 @@ func (adapter *SpaceAdapter) GetList(organizationID string) (objects []vo.ValueO
 	}
 
 	// 领域模型值对象实例化
-	objects = make([]vo.ValueObject, len(respond.GetSpace()))
+	objects = make([]vo.Space, len(respond.GetSpace()))
 
 	// grpc 转成 领域模型
 	for key, value := range respond.GetSpace() {
-		objects[key] = vo.ValueObject{
+		objects[key] = vo.Space{
 			Name:     value.GetName(),
 			Owner:    value.GetOwner(),
 			Manager:  value.GetManager(),

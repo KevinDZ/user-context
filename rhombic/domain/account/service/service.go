@@ -2,9 +2,6 @@ package service
 
 //领域服务：主要的业务规则编写
 import (
-	cliAdapter "user-context/rhombic/acl/adapters/clients"
-	pubAdapter "user-context/rhombic/acl/adapters/publishers"
-	repoAdapter "user-context/rhombic/acl/adapters/repositories"
 	"user-context/rhombic/acl/ports/clients"
 	"user-context/rhombic/acl/ports/publishers"
 	"user-context/rhombic/acl/ports/repositories"
@@ -19,22 +16,8 @@ type Service struct {
 	Publisher publishers.AccountPublisher //事件：发布者端口
 }
 
-func NewAccountService() *Service {
-	return &Service{
-		Client:     cliAdapter.NewUUIDAdapter(),
-		Repository: repoAdapter.NewAccountAdapter(),
-	}
-}
-
-func NewAccountEvent() *Service {
-	return &Service{
-		Publisher:  pubAdapter.NewAccountEvent(),
-		Repository: repoAdapter.NewAccountAdapter(),
-	}
-}
-
 // Registered 注册账户 -- 业务规则
-func (service *Service) Registered(entity entity.Entity) (err error) {
+func (service *Service) Registered(entity entity.Account) (err error) {
 	if err = service.Repository.CheckIsExist(entity); err != nil {
 		return
 	} // 账户存在，返回注册失败
@@ -45,19 +28,19 @@ func (service *Service) Registered(entity entity.Entity) (err error) {
 }
 
 // Query 查询账户
-func (service *Service) Query(id string) *entity.Entity {
+func (service *Service) Query(id string) *entity.Account {
 	return service.Repository.Query(id)
 }
 
 // Verify 验证账户
-func (service *Service) Verify(entity entity.Entity) error {
+func (service *Service) Verify(entity entity.Account) error {
 	return service.Repository.CheckIsExist(entity)
 }
 
 // 事件风暴梳理出来的都可以作为功能
 
 // ModifyPersonInformation 修改个人信息
-func (service *Service) ModifyPersonInformation(entity entity.Entity) error {
+func (service *Service) ModifyPersonInformation(entity entity.Account) error {
 	return service.Repository.Update(entity)
 }
 

@@ -12,7 +12,7 @@ type Factory struct {
 	// 聚合根
 	Root *domain.AggregateRoot
 	// 聚合
-	Entity *entity.Entity
+	Entity *entity.Account
 	// 领域服务
 	Service *service.Service
 
@@ -46,24 +46,7 @@ func (factory *Factory) InstanceOf() (err error) {
 		err = errors.New("entity is exist")
 		return
 	}
-	factory.Service = service.NewAccountService()
-	if factory.Service == nil || factory.Service.Repository == nil || factory.Service.Publisher == nil {
-		err = errors.New("service not started")
-		return
-	}
-	factory.Entity = &entity.Entity{ID: factory.Root.GetAggregateRootID()}
-	return
-}
-
-// InstanceOfEvent 实例化事件
-func (factory *Factory) InstanceOfEvent() (err error) {
-	factory.Service = service.NewAccountEvent()
-	if factory.Service.Publisher == nil {
-		err = errors.New("publisher instance failed")
-	}
-	if factory.Service.Repository == nil {
-		err = errors.New("repository instance failed")
-	}
+	factory.Entity = &entity.Account{ID: factory.Root.GetAggregateRootID()}
 	return
 }
 

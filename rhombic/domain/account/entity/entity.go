@@ -1,7 +1,7 @@
 package entity
 
-// Entity 账户实体
-type Entity struct {
+// Account 账户实体
+type Account struct {
 	ID           string //global ID：账户ID，实体主键，Account内唯一
 	NickName     string //账户名
 	PassWord     string //账户密码

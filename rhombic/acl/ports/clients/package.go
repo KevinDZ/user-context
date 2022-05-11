@@ -5,5 +5,5 @@ import (
 )
 
 type PackageClient interface {
-	GetDetail(organizationID string) (vo vo.ValueObject)
+	GetDetail(organizationID string) (vo vo.Package)
 }

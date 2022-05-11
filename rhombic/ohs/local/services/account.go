@@ -1,7 +1,10 @@
 package services
 
 import (
+	"errors"
+	"user-context/rhombic/acl/adapters/clients"
 	"user-context/rhombic/acl/adapters/pl/dao"
+	"user-context/rhombic/acl/adapters/publishers"
 	"user-context/rhombic/acl/adapters/repositories"
 	"user-context/rhombic/domain/account/factory"
 	"user-context/rhombic/ohs/local/pl/vo"
@@ -46,12 +49,26 @@ func LogoutAppService(request vo.LogoutRequest) (err error) {
 func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest, err error) {
 	// 0.通过聚合根ID，实例化聚合根
 	account := factory.InstanceAccountAggregate(request.RootID)
-	// 1.通过聚合，实例化聚合和领域服务
+	// 1.实例化聚合和领域服务
+	// 1.1 实例化领域服务：端口与适配器实现
+	account.Service.Repository = repositories.NewAccountAdapter()
+	if account.Service.Repository == nil {
+		err = errors.New("service not started")
+		return
+	}
+	account.Service.Client = clients.NewUUIDAdapter()
+	if account.Service.Client == nil {
+		err = errors.New("service not started")
+		return
+	}
+
+	// 1.2 实例化聚合
 	if err = account.InstanceOf(); err != nil {
 		return
 	}
 	// 2.填充聚合内可选参数
 	account.WithAccountOptions(request.NickName, request.PassWord, request.Mobile, request.Email, request.BandID)
+
 	// 3.考虑手机验证码校验 直接调用 不进领域层
 	db := repositories.NewDAO("redis")
 	defer db.Redis.Close()
@@ -65,7 +82,9 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 
 	// 保证应用事件消息不丢失
 	// 5.事件实例化
-	if err = account.InstanceOfEvent(); err != nil {
+	account.Service.Publisher = publishers.NewAccountEvent()
+	if account.Service.Publisher == nil {
+		err = errors.New("publisher instance failed")
 		return
 	}
 	// 6.记录注册事件，保证事件消息不丢失

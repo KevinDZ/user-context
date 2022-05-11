@@ -6,6 +6,6 @@ import (
 )
 
 type OrganizationClient interface {
-	GetList(organizationID string) []vo.ValueObject
-	GetDetail(organizationID string) entity.Entity
+	GetList(organizationID string) []vo.Organization
+	GetDetail(organizationID string) entity.Organization
 }

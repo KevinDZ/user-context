@@ -20,10 +20,10 @@ func NewOrganizationClient() clients.OrganizationClient {
 	}
 }
 
-func (adapter *OrganizationAdapter) GetList(organizationID string) (list []vo.ValueObject) {
+func (adapter *OrganizationAdapter) GetList(organizationID string) (list []vo.Organization) {
 	return
 }
 
-func (adapter *OrganizationAdapter) GetDetail(organizationID string) (entity entity.Entity) {
+func (adapter *OrganizationAdapter) GetDetail(organizationID string) (entity entity.Organization) {
 	return
 }

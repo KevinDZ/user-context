@@ -19,7 +19,7 @@ func NewPermissionAdapter() clients.PermissionClient {
 	}
 }
 
-func (adapter *PermissionAdapter) GetDetail(organizationID string) (vo vo.ValueObject) {
+func (adapter *PermissionAdapter) GetDetail(organizationID string) (vo vo.Permission) {
 
 	return
 }

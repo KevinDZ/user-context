@@ -19,7 +19,7 @@ func NewPackageAdapter() clients.PackageClient {
 	}
 }
 
-func (adapter *PackageAdapter) GetDetail(organizationID string) (vo vo.ValueObject) {
+func (adapter *PackageAdapter) GetDetail(organizationID string) (vo vo.Package) {
 
 	return
 }

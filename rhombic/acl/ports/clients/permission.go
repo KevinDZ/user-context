@@ -5,5 +5,5 @@ import (
 )
 
 type PermissionClient interface {
-	GetDetail(organizationID string) (vo vo.ValueObject)
+	GetDetail(organizationID string) (vo vo.Permission)
 }

@@ -5,5 +5,5 @@ import (
 )
 
 type ApplicationClient interface {
-	GetList(spaceID string) []vo.ValueObject
+	GetList(spaceID string) []vo.Application
 }

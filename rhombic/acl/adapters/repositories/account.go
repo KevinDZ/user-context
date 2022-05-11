@@ -45,7 +45,7 @@ func NewAccountAdapter() repositories.AccountRepository {
 	return repo
 }
 
-func (adapter *AccountAdapter) CheckIsExist(entity entity.Entity) (err error) {
+func (adapter *AccountAdapter) CheckIsExist(entity entity.Account) (err error) {
 	//查询数据库记录
 	account := dao.Account{}
 	err = adapter.db.First(&account, "id = ?", entity.ID).Error
@@ -56,7 +56,7 @@ func (adapter *AccountAdapter) CheckIsExist(entity entity.Entity) (err error) {
 	return
 }
 
-func (adapter *AccountAdapter) Insert(entity entity.Entity) (err error) {
+func (adapter *AccountAdapter) Insert(entity entity.Account) (err error) {
 	// 领域模型转数据模型
 	return adapter.db.Create(&dao.Account{
 		// TODO
@@ -64,17 +64,17 @@ func (adapter *AccountAdapter) Insert(entity entity.Entity) (err error) {
 	}).Error
 }
 
-func (adapter *AccountAdapter) Query(id string) (entities *entity.Entity) {
+func (adapter *AccountAdapter) Query(id string) (entities *entity.Account) {
 	var account dao.Account
 	err := adapter.db.First(&account, "id = ?", id).Error
 	if err != nil {
 		return
 	}
-	entities = &entity.Entity{}
+	entities = &entity.Account{}
 	return
 }
 
-func (adapter *AccountAdapter) Update(entity entity.Entity) (err error) {
+func (adapter *AccountAdapter) Update(entity entity.Account) (err error) {
 	var account dao.Account
 	err = adapter.db.First(&account, "id = ?", entity.ID).Error
 	if err != nil {
