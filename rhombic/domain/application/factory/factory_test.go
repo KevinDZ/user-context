@@ -7,11 +7,11 @@ import (
 
 func TestInstanceApplicationAggregate(t *testing.T) {
 	rootID := ""
-	require.Equal(t, InstanceApplicationAggregate(rootID).Root.RootID, rootID, "no equal")
+	instance := InstanceApplicationAggregate(rootID)
+	require.Equal(t, instance.Root.RootID, rootID, "no equal")
 }
 
 func TestFactory_InstanceOf(t *testing.T) {
 	rootID := ""
-	application := InstanceApplicationAggregate(rootID)
-	require.True(t, application.InstanceOf(), "application instance failed")
+	require.True(t, InstanceApplicationAggregate(rootID).InstanceOf(), "application instance failed")
 }

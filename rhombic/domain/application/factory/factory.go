@@ -9,7 +9,7 @@ import (
 // Factory 继承父类：聚合根隐性依赖
 type Factory struct {
 	Root        *domain.AggregateRoot
-	Application *vo.ValueObject
+	Application *vo.Application
 	Client      *service.Service
 }
 
@@ -22,13 +22,6 @@ func (factory *Factory) InstanceOf() (ok bool) {
 	if len(factory.Root.RootID) == 0 {
 		return
 	}
-	if factory.Application != nil {
-		return
-	}
-	factory.Client = service.NewApplicationService()
-	if factory.Client == nil {
-		return
-	}
-	factory.Application = &vo.ValueObject{}
+	factory.Application = &vo.Application{}
 	return true
 }
