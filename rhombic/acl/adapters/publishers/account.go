@@ -64,16 +64,16 @@ func (event AccountEvent) send(exchange string, msg map[string]string) (err erro
 		false,
 		amqp.Publishing{
 			DeliveryMode: amqp.Persistent,
-			ContentType:  "",
+			ContentType:  "text/plain",
 			Body:         data,
 		})
 }
 
 // Registered 注册事件，失败后重试机制的实现逻辑
 func (event AccountEvent) Registered(msg map[string]string) (err error) {
-	return event.send(viper.GetString("channel.user"), msg)
+	return event.send(viper.GetString("exchange.user"), msg)
 }
 
 func (event AccountEvent) BindWechat(msg map[string]string) (err error) {
-	return event.send(viper.GetString("channel.wechat"), msg)
+	return event.send(viper.GetString("exchange.wechat"), msg)
 }
