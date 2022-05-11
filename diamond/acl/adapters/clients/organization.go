@@ -1,0 +1,29 @@
+package clients
+
+import (
+	"user-context/diamond/acl/ports/clients"
+	"user-context/diamond/domain/organization/entity"
+	"user-context/diamond/domain/organization/vo"
+)
+
+// OrganizationAdapter 组织适配器，实现组织端口定义的方法
+type OrganizationAdapter struct {
+	//grpc 方法调用
+}
+
+// 检查是否实现了接口
+var _ clients.OrganizationClient = (*OrganizationAdapter)(nil)
+
+func NewOrganizationClient() clients.OrganizationClient {
+	return &OrganizationAdapter{
+		//grpc 方法调用
+	}
+}
+
+func (adapter *OrganizationAdapter) GetList(organizationID string) (list []vo.Organization) {
+	return
+}
+
+func (adapter *OrganizationAdapter) GetDetail(organizationID string) (entity entity.Organization) {
+	return
+}

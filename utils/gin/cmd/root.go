@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"user-context/rhombic/ohs/remote/controllers"
+	"user-context/diamond/ohs/remote/controllers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"

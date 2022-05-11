@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"user-context/rhombic/ohs/local/pl/errors"
+	"user-context/diamond/ohs/local/pl/errors"
 )
 
 // startPrometheus 监控 服务健康

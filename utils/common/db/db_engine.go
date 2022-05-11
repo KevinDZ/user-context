@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 	"os"
-	"user-context/rhombic/acl/adapters/pl/dao"
+	"user-context/diamond/acl/adapters/pl/dao"
 	"user-context/utils/common/config"
 
 	"gorm.io/driver/postgres"

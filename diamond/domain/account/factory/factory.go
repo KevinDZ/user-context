@@ -1,0 +1,75 @@
+package factory
+
+import (
+	"errors"
+	"github.com/spf13/viper"
+	"user-context/diamond/domain"
+	"user-context/diamond/domain/account/entity"
+	"user-context/diamond/domain/account/service"
+)
+
+type Factory struct {
+	// 聚合根
+	Root *domain.AggregateRoot
+	// 聚合
+	Entity *entity.Account
+	// 领域服务
+	Service *service.Service
+
+	// 应用事件
+	Event map[string]string
+}
+
+// InstanceAccountAggregate 实例化聚合
+func InstanceAccountAggregate(rootID string) *Factory {
+	return &Factory{Root: domain.NewAggregateRoot(rootID)}
+}
+
+// WithAccountOptions init account aggregate with account params
+func (factory *Factory) WithAccountOptions(name, passwd, phone, email, thirdParty string) *Factory {
+	factory.Entity.NickName = name
+	factory.Entity.PassWord = passwd
+	factory.Entity.Mobile = phone
+	factory.Entity.Email = email
+	factory.Entity.ThirdPartyID = thirdParty
+	return factory
+}
+
+// InstanceOf 实例化聚合和启动领域服务
+func (factory *Factory) InstanceOf() (err error) {
+	if len(factory.Root.RootID) == 0 {
+		err = errors.New("aggregate root id is null")
+		return
+	}
+	if factory.Entity != nil {
+		err = errors.New("entity is exist")
+		return
+	}
+	factory.Entity = &entity.Account{ID: factory.Root.GetAggregateRootID()}
+	return
+}
+
+// Registered 调用注册的领域服务
+func (factory *Factory) Registered() (err error) {
+	// 用户唯一身份标识：获取uuid
+	factory.Entity.ID = factory.Service.Client.GetUUID()
+	if factory.Root.GetAggregateRootID() == "" {
+		factory.Root.SetAggregateRootID(factory.Entity.ID)
+	}
+	// 领域服务：用户注册的持久化
+	if err = factory.Service.Registered(*factory.Entity); err != nil {
+		err = errors.New("domain service save persistence data failed")
+		return
+	}
+	// 设置实体领域行为：注册事件
+	// 用户初始化配置分配：空间、套餐
+	// 1.事件消息
+	factory.Event = map[string]string{factory.Entity.ID: viper.GetString("event.registered")}
+	return
+
+}
+
+// RegisteredEvent 注册事件
+func (factory *Factory) RegisteredEvent() (err error) {
+	return factory.Service.Publisher.Registered(factory.Event)
+}

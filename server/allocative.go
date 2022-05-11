@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
-	"user-context/rhombic/ohs/local/pl/errors"
+	"user-context/diamond/ohs/local/pl/errors"
 )
 
 func StartServe() {
