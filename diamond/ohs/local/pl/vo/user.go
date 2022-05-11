@@ -47,7 +47,6 @@ type LoginInfo struct {
 
 // LoginRequest 账户登录请求
 type LoginRequest struct {
-	RootID   string
 	UserID   string `json:"user_id,omitempty"`
 	Account  string `json:"account,omitempty"`
 	Password string `json:"password,omitempty"`

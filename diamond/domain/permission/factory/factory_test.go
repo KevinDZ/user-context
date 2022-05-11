@@ -7,7 +7,7 @@ import (
 
 func TestInstancePermissionAggregate(t *testing.T) {
 	rootID := ""
-	require.Equal(t, InstancePermissionAggregate(rootID).Root.RootID, rootID, "no equal")
+	require.Equal(t, InstancePermissionAggregate(rootID).Aggregate.RootID, rootID, "no equal")
 }
 
 func TestFactory_InstanceOf(t *testing.T) {

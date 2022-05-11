@@ -15,11 +15,6 @@ type AccountEvent struct {
 	q    amqp.Queue
 }
 
-//var (
-//	once sync.Once
-//	pub  publishers.AccountPublisher
-//)
-
 func NewAccountEvent(name string) publishers.AccountPublisher {
 	// rabbitMQ 连接
 	mq := new(AccountEvent)
