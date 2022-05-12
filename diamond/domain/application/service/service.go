@@ -10,6 +10,6 @@ type Service struct {
 }
 
 // GetList 应用列表
-func (app *Service) GetList(id string) []vo.Application {
-	return app.ApplicationClient.GetList(id)
+func (service *Service) GetList(id string) []vo.Application {
+	return service.ApplicationClient.GetList(id)
 }

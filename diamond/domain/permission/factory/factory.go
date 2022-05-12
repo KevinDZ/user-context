@@ -1,6 +1,7 @@
 package factory
 
 import (
+	"strings"
 	"user-context/diamond/domain"
 	"user-context/diamond/domain/permission/service"
 	"user-context/diamond/domain/permission/vo"
@@ -8,9 +9,9 @@ import (
 
 // Factory 继承父类：聚合根隐性依赖
 type Factory struct {
-	Aggregate   *domain.AggregateRoot
-	Application *vo.Permission
-	Client      *service.Permission
+	Aggregate  domain.AggregateRoot
+	Permission vo.Permission
+	Service    *service.Service
 }
 
 // InstancePermissionAggregate 实例化聚合
@@ -20,9 +21,9 @@ func InstancePermissionAggregate(rootID string) *Factory {
 
 // InstanceOf 实例化聚合和领域服务
 func (factory *Factory) InstanceOf() (ok bool) {
-	if len(factory.Aggregate.RootID) == 0 {
+	if strings.Replace(factory.Aggregate.GetAggregateRootID(), " ", "", -1) == "" {
 		return
 	}
-	factory.Application = &vo.Permission{}
+	factory.Permission = vo.Permission{}
 	return true
 }

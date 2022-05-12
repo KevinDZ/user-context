@@ -1,15 +1,15 @@
 package service
 
 import (
-	port "user-context/diamond/acl/ports/clients"
+	"user-context/diamond/acl/ports/clients"
 	"user-context/diamond/domain/permission/vo"
 )
 
-type Permission struct {
-	port.PermissionClient
+type Service struct {
+	Permission clients.PermissionClient
 }
 
 // GetDetail 权限详情
-func (app *Permission) GetDetail(id string) vo.Permission {
-	return app.PermissionClient.GetDetail(id)
+func (service *Service) GetDetail(id string) vo.Permission {
+	return service.Permission.GetDetail(id)
 }

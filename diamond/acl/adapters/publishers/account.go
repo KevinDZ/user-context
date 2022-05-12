@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
-	"user-context/diamond/acl/ports/publishers"
 )
 
 // AccountEvent 账户发布者，实现账户端口定义的方法
@@ -15,7 +14,7 @@ type AccountEvent struct {
 	q    amqp.Queue
 }
 
-func NewAccountEvent(name string) publishers.AccountPublisher {
+func NewAccountEvent(name string) *AccountEvent {
 	// rabbitMQ 连接
 	mq := new(AccountEvent)
 	var err error

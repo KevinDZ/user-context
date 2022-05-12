@@ -6,8 +6,8 @@ type AggregateRoot struct {
 }
 
 // NewAggregateRoot 聚合根构造函数，在本地应用服务生成
-func NewAggregateRoot(rootID string) *AggregateRoot {
-	root := &AggregateRoot{RootID: rootID}
+func NewAggregateRoot(rootID string) AggregateRoot {
+	root := AggregateRoot{RootID: rootID}
 	return root
 }
 

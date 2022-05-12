@@ -1,6 +1,7 @@
 package factory
 
 import (
+	"strings"
 	"user-context/diamond/domain"
 	"user-context/diamond/domain/space/service"
 	"user-context/diamond/domain/space/vo"
@@ -8,9 +9,9 @@ import (
 
 // Factory 继承父类：聚合根隐性依赖
 type Factory struct {
-	Aggregate   *domain.AggregateRoot
-	Application *vo.Space
-	Client      *service.Service
+	Aggregate domain.AggregateRoot
+	Space     vo.Space
+	Service   *service.Service
 }
 
 // InstanceSpaceAggregate 实例化聚合
@@ -20,9 +21,9 @@ func InstanceSpaceAggregate(rootID string) *Factory {
 
 // InstanceOf 实例化聚合和领域服务
 func (factory *Factory) InstanceOf() (ok bool) {
-	if len(factory.Aggregate.RootID) == 0 {
+	if strings.Replace(factory.Aggregate.GetAggregateRootID(), " ", "", -1) == "" {
 		return
 	}
-	factory.Application = &vo.Space{}
+	factory.Space = vo.Space{}
 	return true
 }

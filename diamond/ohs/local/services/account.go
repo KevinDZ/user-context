@@ -51,13 +51,13 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 	account := factory.InstanceAccountAggregate("") // rootID = entity ID
 	// 1.实例化聚合和领域服务
 	// 1.1 实例化领域服务：端口与适配器实现
-	account.Service.Repository = repositories.NewAccountAdapter()
-	if account.Service.Repository == nil {
+	account.Service.Account = repositories.NewAccountAdapter()
+	if account.Service.Account == nil {
 		err = errors.New("repository instance failed")
 		return
 	}
-	account.Service.Client = clients.NewUUIDAdapter()
-	if account.Service.Client == nil {
+	account.Service.UUID = clients.NewUUIDAdapter()
+	if account.Service.UUID == nil {
 		err = errors.New("client instance failed")
 		return
 	}
@@ -83,17 +83,17 @@ func RegisteredAppService(request vo.RegisteredRequest) (result vo.LoginRequest,
 	// 应用事件必须同步实现，不能异步通知
 	// 5.1 事件实例化
 	name := "" // TODO what is name ?
-	account.Service.Publisher = publishers.NewAccountEvent(name)
-	if account.Service.Publisher == nil {
+	publisher := publishers.NewAccountEvent(name)
+	if publisher == nil {
 		err = errors.New("publisher instance failed")
 		return
 	}
 	// 5.2 事件关闭连接
-	defer account.Service.Publisher.Close()        // 后关闭 connection
-	defer account.Service.Publisher.ChannelClose() // 先关闭 channel
+	defer publisher.Close()        // 后关闭 connection
+	defer publisher.ChannelClose() // 先关闭 channel
 
 	// 6.发布注册应用事件：空间、套餐
-	if err = account.RegisteredEvent(); err != nil {
+	if err = publisher.Registered(account.Event); err != nil {
 		return // 注册事件失败， 返回注册失败
 	}
 	result = vo.LoginRequest{}
