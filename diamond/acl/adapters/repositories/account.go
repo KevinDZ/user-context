@@ -47,7 +47,7 @@ func NewAccountAdapter() repositories.AccountRepository {
 func (adapter *AccountAdapter) CheckIsExist(entity entity.Account) (err error) {
 	//查询数据库记录
 	account := dao.Account{}
-	err = adapter.db.First(&account, "id = ?", entity.ID).Error
+	err = adapter.db.First(&account, "id = ?", entity.GetID()).Error
 	if account.ID == "" {
 		err = errors.New("account no exist")
 		return
@@ -59,7 +59,7 @@ func (adapter *AccountAdapter) Insert(entity entity.Account) (err error) {
 	// 领域模型转数据模型
 	return adapter.db.Create(&dao.Account{
 		// TODO
-		ID: entity.ID,
+		ID: entity.GetID(),
 	}).Error
 }
 
@@ -75,13 +75,13 @@ func (adapter *AccountAdapter) Query(id string) (entities *entity.Account) {
 
 func (adapter *AccountAdapter) Update(entity entity.Account) (err error) {
 	var account dao.Account
-	err = adapter.db.First(&account, "id = ?", entity.ID).Error
+	err = adapter.db.First(&account, "id = ?", entity.GetID()).Error
 	if err != nil {
 		return
 	}
 	err = adapter.db.Model(account).Updates(map[string]interface{}{
 		// TODO
-		"nickname": entity.NickName,
+		"nickname": entity.GetNickName(),
 	}).Error
 	return
 }
